@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class User {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
     @Email @NotNull
@@ -29,9 +29,6 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-//    private List<Badge> badges;
-
 
     public User( String email, String password, String profileImgUrl, String nickname, UserRole role) {
         this.email = email;
