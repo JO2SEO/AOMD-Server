@@ -23,14 +23,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AuthService {
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -38,6 +35,23 @@ public class AuthService {
     TODO: 이미지 서버에 이미지 업로드
     */
     public KakaoLoginResponse kakaoLogin(final String authorizationCode, final String callbackUrl) throws JsonProcessingException {
+        String kakaoAccessToken = getKakaoAccessToken(authorizationCode, callbackUrl);
+        Map kakaoUserMap = getKakaoUser(kakaoAccessToken);
+        Map profile = (Map) kakaoUserMap.get("profile");
+
+        String email = (String) kakaoUserMap.get("email");
+        String password = email + "kakaoLogin";
+        String imageUrl = (String) profile.get("thumbnail_image_url");
+        String nickname = (String) profile.get("nickname");
+
+        if (userRepository.findByEmail(email).isEmpty()) {
+            userRepository.signup(new User(email, passwordEncoder.encode(password), imageUrl, nickname, UserRole.USER));
+        }
+
+        return new KakaoLoginResponse(email, password);
+    }
+
+    private String getKakaoAccessToken(String authorizationCode, String callbackUrl) throws JsonProcessingException {
         /* 카카오 토큰 발급 */
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
@@ -57,45 +71,29 @@ public class AuthService {
                 entity,
                 String.class
         );
+
         ObjectMapper objectMapper = new ObjectMapper();
         Map json = objectMapper.readValue(response.getBody(), Map.class);
-        String accessToken = (String)json.get("access_token");
+        return (String)json.get("access_token");
+    }
 
+    private Map getKakaoUser(final String accessToken) throws JsonProcessingException {
         /* 카카오 토큰으로 정보 가져오기 */
-        headers.clear();
+        HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", String.format("Bearer %s", accessToken));
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        response = rt.exchange(
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
                 "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.GET,
                 entity,
                 String.class
         );
 
-        json = objectMapper.readValue(response.getBody(), Map.class);
-        Map kakao_account = (Map) json.get("kakao_account");
-        Map profile = (Map) kakao_account.get("profile");
-
-        String email = (String) kakao_account.get("email");
-        String password = UUID.randomUUID().toString();
-        String imageUrl = (String) profile.get("thumbnail_image_url");
-        String nickname = (String) profile.get("nickname");
-
-        userRepository.signup(new User(email, passwordEncoder.encode(password), imageUrl, nickname, UserRole.USER));
-
-        return new KakaoLoginResponse(email, password);
-    }
-
-    @Transactional(readOnly = true)
-    public String genJwt(final String email, final String password) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(email, password);
-
-        Authentication authentication = authenticationManagerBuilder
-                .getObject()
-                .authenticate(usernamePasswordAuthenticationToken);
-
-        return tokenProvider.createToken(authentication);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map json = objectMapper.readValue(response.getBody(), Map.class);
+        return (Map) json.get("kakao_account");
     }
 }
