@@ -10,4 +10,6 @@ public interface UserService {
     void signup(SignupRequest signupRequest) throws BaseException;
 
     User getMyUser() throws BaseException;
+
+    void updateProfileImg(String savedProfileImgUrl) throws BaseException;
 }
