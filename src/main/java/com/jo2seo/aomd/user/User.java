@@ -41,4 +41,7 @@ public class User {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public void updateProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
+    }
 }

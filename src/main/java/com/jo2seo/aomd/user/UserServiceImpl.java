@@ -46,4 +46,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUEST_ERROR));
         return user;
     }
+
+    @Override
+    public void updateProfileImg(String savedProfileImgUrl) throws BaseException {
+        User user = getMyUser();
+        user.updateProfileImgUrl(savedProfileImgUrl);
+    }
 }
