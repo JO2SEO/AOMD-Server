@@ -3,6 +3,7 @@ package com.jo2seo.aomd.auth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jo2seo.aomd.auth.dto.response.KakaoLoginResponse;
+import com.jo2seo.aomd.file.FileService;
 import com.jo2seo.aomd.security.TokenProvider;
 import com.jo2seo.aomd.user.User;
 import com.jo2seo.aomd.user.UserRepository;
@@ -22,6 +23,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -30,22 +32,24 @@ import java.util.Map;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileService fileService;
 
     /*
     TODO: 이미지 서버에 이미지 업로드
     */
-    public KakaoLoginResponse kakaoLogin(final String authorizationCode, final String callbackUrl) throws JsonProcessingException {
+    public KakaoLoginResponse kakaoLogin(final String authorizationCode, final String callbackUrl) throws IOException {
         String kakaoAccessToken = getKakaoAccessToken(authorizationCode, callbackUrl);
         Map kakaoUserMap = getKakaoUser(kakaoAccessToken);
         Map profile = (Map) kakaoUserMap.get("profile");
 
         String email = (String) kakaoUserMap.get("email");
         String password = email + "kakaoLogin";
-        String imageUrl = (String) profile.get("thumbnail_image_url");
+        String kakaoImgUrl = (String) profile.get("thumbnail_image_url");
         String nickname = (String) profile.get("nickname");
+        String imgUrl = fileService.downloadKakaoProfileImage(kakaoImgUrl);
 
         if (userRepository.findByEmail(email).isEmpty()) {
-            userRepository.signup(new User(email, passwordEncoder.encode(password), imageUrl, nickname, UserRole.USER));
+            userRepository.signup(new User(email, passwordEncoder.encode(password), imgUrl, nickname, UserRole.USER));
         }
 
         return new KakaoLoginResponse(email, password);

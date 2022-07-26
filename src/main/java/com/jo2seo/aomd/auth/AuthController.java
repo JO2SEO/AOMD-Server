@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -50,7 +51,7 @@ public class AuthController {
     public ResponseEntity<BaseResponse> kakaoLogin(
             HttpServletRequest request,
             @Valid @RequestBody KakaoLoginRequest kakaoLoginRequest
-    ) throws JsonProcessingException {
+    ) throws IOException {
         if (kakaoLoginRequest.getCode() == null) return new ResponseEntity(new BaseResponse(BaseResponseStatus.DATABASE_ERROR), HttpStatus.BAD_REQUEST);
         String origin = request.getHeader("origin");
         if (origin == null) return new ResponseEntity(new BaseResponse(BaseResponseStatus.DATABASE_ERROR), HttpStatus.BAD_REQUEST);
