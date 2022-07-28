@@ -18,7 +18,7 @@ public class PortfolioController {
         return portfolioId;
     }
 
-    @GetMapping("/portfolio/{id}")
+    @GetMapping("/portfolio/url/{id}")
     public String getPortfolioUrl(
             @PathVariable("id") Long id
     ) {
