@@ -21,6 +21,13 @@ public class PortfolioRepository {
         return Optional.of(em.find(Portfolio.class, id));
     }
 
+    public Optional<Portfolio> findByShareUrl(String shareUrl) {
+        return Optional.of(em.createQuery("select p from Portfolio p where p.shareUrl = :shareUrl", Portfolio.class)
+                .setParameter("shareUrl", shareUrl)
+                .getSingleResult()
+        );
+    }
+
     public List<Portfolio> findAll() {
         return em.createQuery("select p from Portfolio p").getResultList();
     }

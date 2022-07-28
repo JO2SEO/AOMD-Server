@@ -24,10 +24,10 @@ public class PortfolioService {
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
         List<Portfolio> allByUser = portfolioRepository.findAllByUser(user);
-        return allByUser.stream().map(portfolio -> new GetAllResponse(portfolio.getId(), portfolio.getTitle())).collect(Collectors.toList());
+        return allByUser.stream().map(portfolio -> new GetAllResponse(portfolio.getShareUrl(), portfolio.getTitle())).collect(Collectors.toList());
     }
 
-    public Long createNewPortfolio() {
+    public String createNewPortfolio() {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
@@ -35,17 +35,11 @@ public class PortfolioService {
 
         Portfolio portfolio = new Portfolio(user, title);
         portfolioRepository.save(portfolio);
-        return portfolio.getId();
-    }
-
-    @Transactional(readOnly = true)
-    public String getShareUrl(Long id) {
-        Portfolio portfolio = portfolioRepository.find(id).orElseThrow();
         return portfolio.getShareUrl();
     }
 
-    public void updateTitle(Long id, String title) {
-        Portfolio portfolio = portfolioRepository.find(id).orElseThrow();
+    public void updateTitle(String shareUrl, String title) {
+        Portfolio portfolio = portfolioRepository.findByShareUrl(shareUrl).orElseThrow();
         portfolio.updateTitle(title);
     }
 

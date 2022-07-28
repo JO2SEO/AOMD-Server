@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class GetAllResponse {
-    private Long portfolioId;
+    private String id;
     private String title;
 }
