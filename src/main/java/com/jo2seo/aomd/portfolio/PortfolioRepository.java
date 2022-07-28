@@ -1,5 +1,6 @@
 package com.jo2seo.aomd.portfolio;
 
+import com.jo2seo.aomd.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +23,11 @@ public class PortfolioRepository {
 
     public List<Portfolio> findAll() {
         return em.createQuery("select p from Portfolio p").getResultList();
+    }
+
+    public List<Portfolio> findAllByUser(User user) {
+        return em.createQuery("select p from Portfolio p where p.user = :user")
+                .setParameter("user", user)
+                .getResultList();
     }
 }
