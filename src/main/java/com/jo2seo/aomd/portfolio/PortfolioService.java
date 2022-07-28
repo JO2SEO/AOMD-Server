@@ -30,4 +30,9 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.find(id).orElseThrow();
         return portfolio.getShareUrl();
     }
+
+    public void updateTitle(Long id, String title) {
+        Portfolio portfolio = portfolioRepository.find(id).orElseThrow();
+        portfolio.updateTitle(title);
+    }
 }

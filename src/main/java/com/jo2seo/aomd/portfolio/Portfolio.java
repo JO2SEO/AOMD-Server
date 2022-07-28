@@ -45,4 +45,8 @@ public class Portfolio {
         this.user = user;
         this.title = title;
     }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
 }

@@ -24,4 +24,12 @@ public class PortfolioController {
     ) {
         return portfolioService.getShareUrl(id);
     }
+
+    @PatchMapping("/portfolio/title/{id}")
+    public void patchPortfolioTitle(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody PatchPortfolioTitleRequest patchPortfolioTitleRequest
+    ) {
+        portfolioService.updateTitle(id, patchPortfolioTitleRequest.getTitle());
+    }
 }
