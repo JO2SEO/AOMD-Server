@@ -14,9 +14,11 @@ public class PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final UserRepository userRepository;
 
-    public Long save(String title) {
+    public Long createNewPortfolio() {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        String title = "new Portfolio";
 
         Portfolio portfolio = new Portfolio(user, title);
         portfolioRepository.save(portfolio);
