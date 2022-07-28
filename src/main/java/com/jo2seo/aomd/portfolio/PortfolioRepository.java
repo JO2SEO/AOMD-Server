@@ -17,19 +17,32 @@ public class PortfolioRepository {
         em.persist(portfolio);
     }
 
-    public Optional<Portfolio> find(Long id) {
-        return Optional.of(em.find(Portfolio.class, id));
+    public boolean checkIsMine(String shareUrl, User user) {
+        User owner = em.createQuery("select p.user from Portfolio p where p.shareUrl = :shareUrl", User.class)
+                .setParameter("shareUrl", shareUrl)
+                .getSingleResult();
+        return owner.equals(user);
     }
 
-    public Optional<Portfolio> findByShareUrl(String shareUrl) {
+    public boolean checkShared(String shareUrl) {
+        return em.createQuery("select p.isShared from Portfolio p where p.shareUrl = :shareUrl", Boolean.class)
+                .setParameter("shareUrl", shareUrl)
+                .getSingleResult();
+    }
+
+    public Optional<Portfolio> findOneByUrl(String shareUrl) {
         return Optional.of(em.createQuery("select p from Portfolio p where p.shareUrl = :shareUrl", Portfolio.class)
                 .setParameter("shareUrl", shareUrl)
                 .getSingleResult()
         );
     }
 
-    public List<Portfolio> findAll() {
-        return em.createQuery("select p from Portfolio p").getResultList();
+    public Optional<Portfolio> findOneByUserAndUrl(User user, String shareUrl) {
+        return Optional.of(em.createQuery("select p from Portfolio p where p.user = :user and p.shareUrl = :shareUrl", Portfolio.class)
+                .setParameter("user", user)
+                .setParameter("shareUrl", shareUrl)
+                .getSingleResult()
+        );
     }
 
     public List<Portfolio> findAllByUser(User user) {
