@@ -24,4 +24,10 @@ public class PortfolioService {
         portfolioRepository.save(portfolio);
         return portfolio.getId();
     }
+
+    @Transactional(readOnly = true)
+    public String getShareUrl(Long id) {
+        Portfolio portfolio = portfolioRepository.find(id).orElseThrow();
+        return portfolio.getShareUrl();
+    }
 }
