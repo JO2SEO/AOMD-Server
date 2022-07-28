@@ -24,4 +24,10 @@ public class Resume {
 
     @Lob
     private String content = "";
+
+    public Resume(Portfolio portfolio, String question, String content) {
+        this.portfolio = portfolio;
+        this.question = question;
+        this.content = content;
+    }
 }
