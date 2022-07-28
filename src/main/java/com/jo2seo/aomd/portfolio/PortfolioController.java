@@ -22,16 +22,16 @@ public class PortfolioController {
     }
 
     @PostMapping("/portfolio")
-    public Long createPortfolio() {
+    public BaseResponse createPortfolio() {
         Long portfolioId = portfolioService.createNewPortfolio();
-        return portfolioId;
+        return new BaseResponse(portfolioId);
     }
 
     @GetMapping("/portfolio/url/{id}")
-    public String getPortfolioUrl(
+    public BaseResponse getPortfolioUrl(
             @PathVariable("id") Long id
     ) {
-        return portfolioService.getShareUrl(id);
+        return new BaseResponse(portfolioService.getShareUrl(id));
     }
 
     @PatchMapping("/portfolio/title/{id}")
