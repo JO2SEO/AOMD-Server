@@ -1,11 +1,7 @@
 package com.jo2seo.aomd.portfolio;
 
-import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponse;
-import com.jo2seo.aomd.portfolio.dto.FindOneByShareUrlResponse;
-import com.jo2seo.aomd.portfolio.dto.GetAllResponse;
-import com.jo2seo.aomd.portfolio.dto.PatchPortfolioOrderRequest;
-import com.jo2seo.aomd.portfolio.dto.PatchPortfolioTitleRequest;
+import com.jo2seo.aomd.portfolio.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,4 +49,11 @@ public class PortfolioController {
         portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getChainIdList());
     }
 
+    @PatchMapping(value = "/portfolio/{id}/shared")
+    public void patchPortfolioIsShared(
+            @PathVariable("id") String shareUrl,
+            @Valid @RequestBody PatchPortfolioSharedRequest patchPortfolioSharedRequest
+    ) {
+        portfolioService.updateShared(shareUrl, patchPortfolioSharedRequest.isShared());
+    }
 }

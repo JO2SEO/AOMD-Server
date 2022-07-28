@@ -108,4 +108,12 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
         portfolio.updateOrder(chainIdList);
     }
+
+    public void updateShared(String shareUrl, boolean shared) {
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
+        portfolio.updateShared(shared);
+    }
 }

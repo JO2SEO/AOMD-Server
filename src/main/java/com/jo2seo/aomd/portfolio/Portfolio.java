@@ -68,4 +68,8 @@ public class Portfolio {
             }
         }
     }
+
+    public void updateShared(boolean shared) {
+        this.isShared = shared;
+    }
 }
