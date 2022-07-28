@@ -36,7 +36,7 @@ public class PortfolioController {
         return new BaseResponse(shareUrl);
     }
 
-    @PatchMapping("/portfolio/title/{id}")
+    @PatchMapping(value = "/portfolio/{id}/title")
     public void patchPortfolioTitle(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PatchPortfolioTitleRequest patchPortfolioTitleRequest
