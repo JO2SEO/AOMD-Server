@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +36,9 @@ public class Portfolio {
 
     @NotNull
     private String shareUrl = String.valueOf(UUID.randomUUID());
+
+    @OneToMany(mappedBy = "id")
+    private List<PortfolioChainOrder> portfolioChainOrderList = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;
