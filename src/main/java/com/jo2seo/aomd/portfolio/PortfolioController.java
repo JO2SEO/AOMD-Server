@@ -4,6 +4,7 @@ import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponse;
 import com.jo2seo.aomd.portfolio.dto.FindOneByShareUrlResponse;
 import com.jo2seo.aomd.portfolio.dto.GetAllResponse;
+import com.jo2seo.aomd.portfolio.dto.PatchPortfolioOrderRequest;
 import com.jo2seo.aomd.portfolio.dto.PatchPortfolioTitleRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +44,13 @@ public class PortfolioController {
     ) {
         portfolioService.updateTitle(shareUrl, patchPortfolioTitleRequest.getTitle());
     }
+
+    @PatchMapping(value = "/portfolio/{id}/order")
+    public void patchPortfolioOrder(
+            @PathVariable("id") String shareUrl,
+            @Valid @RequestBody PatchPortfolioOrderRequest patchPortfolioOrderRequest
+    ) {
+        portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getChainIdList());
+    }
+
 }

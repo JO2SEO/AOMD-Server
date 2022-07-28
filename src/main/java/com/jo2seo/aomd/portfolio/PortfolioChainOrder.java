@@ -19,4 +19,8 @@ public class PortfolioChainOrder {
 
     private String chainId;
     private Integer orderIndex;
+
+    public void updateOrder(int index) {
+        orderIndex = index;
+    }
 }

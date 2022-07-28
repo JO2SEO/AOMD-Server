@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -54,5 +56,16 @@ public class Portfolio {
 
     public void updateTitle(String title) {
         this.title = title;
+    }
+
+    public void updateOrder(List<String> chainIdList) {
+        for (String chainId : chainIdList) {
+            for (PortfolioChainOrder target : portfolioChainOrderList) {
+                if (target.getChainId().equals(chainId)) {
+                    target.updateOrder(portfolioChainOrderList.indexOf(target));
+                    break;
+                }
+            }
+        }
     }
 }

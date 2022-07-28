@@ -101,4 +101,11 @@ public class PortfolioService {
         portfolio.updateTitle(title);
     }
 
+    public void updateOrder(String shareUrl, List<String> chainIdList) {
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
+        portfolio.updateOrder(chainIdList);
+    }
 }
