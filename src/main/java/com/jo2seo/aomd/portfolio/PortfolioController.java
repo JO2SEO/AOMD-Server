@@ -49,8 +49,8 @@ public class PortfolioController {
         portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getChainIdList());
     }
 
-    @PatchMapping(value = "/portfolio/{id}/shared")
-    public void patchPortfolioIsShared(
+    @PatchMapping(value = "/portfolio/{id}/sharing")
+    public void patchPortfolioSharing(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PatchPortfolioSharedRequest patchPortfolioSharedRequest
     ) {

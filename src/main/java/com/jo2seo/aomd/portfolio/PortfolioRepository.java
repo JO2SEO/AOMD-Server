@@ -24,8 +24,8 @@ public class PortfolioRepository {
         return owner.equals(user);
     }
 
-    public boolean checkShared(String shareUrl) {
-        return em.createQuery("select p.isShared from Portfolio p where p.shareUrl = :shareUrl", Boolean.class)
+    public boolean checkSharing(String shareUrl) {
+        return em.createQuery("select p.sharing from Portfolio p where p.shareUrl = :shareUrl", Boolean.class)
                 .setParameter("shareUrl", shareUrl)
                 .getSingleResult();
     }

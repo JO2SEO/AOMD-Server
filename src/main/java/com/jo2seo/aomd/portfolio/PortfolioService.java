@@ -43,7 +43,7 @@ public class PortfolioService {
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
         boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
-        boolean isShared = portfolioRepository.checkShared(shareUrl);
+        boolean isShared = portfolioRepository.checkSharing(shareUrl);
 
         FindOneByShareUrlResponse res;
         if (isMine) {
@@ -52,7 +52,7 @@ public class PortfolioService {
             portfolioChainOrderList.sort(Comparator.comparing(PortfolioChainOrder::getOrderIndex));
             res = new FindOneByShareUrlResponse(
                     portfolio.getTitle(),
-                    portfolio.getIsShared(),
+                    portfolio.getSharing(),
                     portfolio.getCreatedAt(),
                     portfolio.getUpdatedAt(),
                     portfolioChainOrderList.stream().map(PortfolioChainOrder::getChainId).collect(Collectors.toList())
@@ -64,7 +64,7 @@ public class PortfolioService {
                 portfolioChainOrderList.sort(Comparator.comparing(PortfolioChainOrder::getOrderIndex));
                 res =  new FindOneByShareUrlResponse(
                         null,
-                        portfolio.getIsShared(),
+                        portfolio.getSharing(),
                         portfolio.getCreatedAt(),
                         portfolio.getUpdatedAt(),
                         portfolioChainOrderList.stream().map(PortfolioChainOrder::getChainId).collect(Collectors.toList())

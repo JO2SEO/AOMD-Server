@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -34,7 +32,7 @@ public class Portfolio {
     private String title;
 
     @NotNull
-    private Boolean isShared = false;
+    private Boolean sharing = false;
 
     @NotNull
     private String shareUrl = String.valueOf(UUID.randomUUID());
@@ -70,6 +68,6 @@ public class Portfolio {
     }
 
     public void updateShared(boolean shared) {
-        this.isShared = shared;
+        this.sharing = shared;
     }
 }
