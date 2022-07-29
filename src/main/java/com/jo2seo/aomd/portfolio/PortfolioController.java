@@ -47,7 +47,7 @@ public class PortfolioController {
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PatchPortfolioOrderRequest patchPortfolioOrderRequest
     ) throws BaseException {
-        portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getChainIdList());
+        portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getBlockIdList());
     }
 
     @PatchMapping(value = "/portfolio/{id}/sharing")
@@ -59,7 +59,7 @@ public class PortfolioController {
     }
 
     @PostMapping("/portfolio/{id}/block")
-    public void postPortfolioChain(
+    public void postPortfolioBlock(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PostPortfolioBlockRequest postPortfolioBlockRequest
     ) throws BaseException {

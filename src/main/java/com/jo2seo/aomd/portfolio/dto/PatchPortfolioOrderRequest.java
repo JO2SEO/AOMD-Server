@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 public class PatchPortfolioOrderRequest {
     @NotNull
-    private List<String> chainIdList;
+    private List<String> blockIdList;
 }

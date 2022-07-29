@@ -42,7 +42,7 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio")
     @OrderColumn(name = "orderIndex")
-    private List<PortfolioChainOrder> portfolioChainOrderList = new ArrayList<>();
+    private List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -60,22 +60,22 @@ public class Portfolio {
         this.title = title;
     }
 
-    public void updateOrder(List<String> chainIdList) throws BaseException {
-        if (chainIdList.size() != portfolioChainOrderList.size()) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
-        for (String chainId : chainIdList) {
-            boolean anyMatch = portfolioChainOrderList.stream().anyMatch(portfolioChainOrder -> portfolioChainOrder.getChainId().equals(chainId));
+    public void updateOrder(List<String> blockList) throws BaseException {
+        if (blockList.size() != portfolioBlockOrderList.size()) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+        for (String blockId : blockList) {
+            boolean anyMatch = portfolioBlockOrderList.stream().anyMatch(portfolioBlockOrder -> portfolioBlockOrder.getBlockId().equals(blockId));
             if (!anyMatch) {
                 throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
             }
         }
-        portfolioChainOrderList.sort(Comparator.comparingInt(o -> chainIdList.indexOf(o.getChainId())));
+        portfolioBlockOrderList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
     }
 
     public void updateSharing(boolean sharing) {
         this.sharing = sharing;
     }
 
-    public void addNewBlock(PortfolioChainOrder portfolioChainOrder) {
-        portfolioChainOrderList.add(portfolioChainOrder);
+    public void addNewBlock(PortfolioBlockOrder portfolioBlockOrder) {
+        portfolioBlockOrderList.add(portfolioBlockOrder);
     }
 }

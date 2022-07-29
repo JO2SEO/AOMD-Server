@@ -51,24 +51,24 @@ public class PortfolioService {
         FindOneByShareUrlResponse res;
         if (isMine) {
             Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
-            List<PortfolioChainOrder> portfolioChainOrderList = portfolio.getPortfolioChainOrderList();
+            List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
             res = new FindOneByShareUrlResponse(
                     portfolio.getTitle(),
                     portfolio.getSharing(),
                     portfolio.getCreatedAt(),
                     portfolio.getUpdatedAt(),
-                    portfolioChainOrderList.stream().map(PortfolioChainOrder::getChainId).collect(Collectors.toList())
+                    portfolioBlockOrderList.stream().map(PortfolioBlockOrder::getBlockId).collect(Collectors.toList())
             );
         } else {
             if (isSharing) {
                 Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
-                List<PortfolioChainOrder> portfolioChainOrderList = portfolio.getPortfolioChainOrderList();
+                List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
                 res =  new FindOneByShareUrlResponse(
                         null,
                         portfolio.getSharing(),
                         portfolio.getCreatedAt(),
                         portfolio.getUpdatedAt(),
-                        portfolioChainOrderList.stream().map(PortfolioChainOrder::getChainId).collect(Collectors.toList())
+                        portfolioBlockOrderList.stream().map(PortfolioBlockOrder::getBlockId).collect(Collectors.toList())
                 );
             } else {
                 res = new FindOneByShareUrlResponse (
@@ -102,12 +102,12 @@ public class PortfolioService {
         portfolio.updateTitle(title);
     }
 
-    public void updateOrder(String shareUrl, List<String> chainIdList) throws BaseException {
+    public void updateOrder(String shareUrl, List<String> blockIdList) throws BaseException {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
         Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
-        portfolio.updateOrder(chainIdList);
+        portfolio.updateOrder(blockIdList);
     }
 
     public void updateSharing(String shareUrl, boolean sharing) {
@@ -133,8 +133,8 @@ public class PortfolioService {
         log.info("정상적으로 portfolio에 block을 추가함");
 
         Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
-        PortfolioChainOrder portfolioChainOrder = new PortfolioChainOrder(portfolio, blockId);
-        portfolioRepository.savePortfolioBlock(portfolioChainOrder);
-        portfolio.addNewBlock(portfolioChainOrder);
+        PortfolioBlockOrder portfolioBlockOrder = new PortfolioBlockOrder(portfolio, blockId);
+        portfolioRepository.savePortfolioBlock(portfolioBlockOrder);
+        portfolio.addNewBlock(portfolioBlockOrder);
     }
 }

@@ -8,19 +8,19 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class PortfolioChainOrder {
+public class PortfolioBlockOrder {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "portfolio_chain_order_id")
+    @Column(name = "portfolio_block_order_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    private String chainId;
+    private String blockId;
 
-    public PortfolioChainOrder(Portfolio portfolio, String chainId) {
+    public PortfolioBlockOrder(Portfolio portfolio, String blockId) {
         this.portfolio = portfolio;
-        this.chainId = chainId;
+        this.blockId = blockId;
     }
 }

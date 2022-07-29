@@ -13,5 +13,5 @@ public class FindOneByShareUrlResponse {
     Boolean sharing;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-    List<String> chainIdList;
+    List<String> blockIdList;
 }
