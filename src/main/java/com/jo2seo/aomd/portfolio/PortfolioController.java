@@ -65,4 +65,12 @@ public class PortfolioController {
     ) throws BaseException {
         portfolioService.addBlock(shareUrl, postPortfolioBlockRequest.getBlockId());
     }
+
+    @DeleteMapping("/portfolio/{id}/block")
+    public void deletePortfolioBlock(
+            @PathVariable("id") String shareUrl,
+            @Valid @RequestBody DeletePortfolioBlockRequest deletePortfolioBlockRequest
+    ) throws BaseException {
+        portfolioService.deleteBlock(shareUrl, deletePortfolioBlockRequest.getBlockId());
+    }
 }

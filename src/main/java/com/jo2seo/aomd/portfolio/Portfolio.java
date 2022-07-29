@@ -40,7 +40,7 @@ public class Portfolio {
     @NotNull
     private String shareUrl = String.valueOf(UUID.randomUUID());
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "orderIndex")
     private List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
 
@@ -77,12 +77,14 @@ public class Portfolio {
 
     public boolean blockExists(String blockId) {
         return portfolioBlockOrderList.stream()
-                .filter(p -> p.getBlockId().equals(blockId))
-                .findAny()
-                .isPresent();
+                .anyMatch(p -> p.getBlockId().equals(blockId));
     }
 
     public void addNewBlock(PortfolioBlockOrder portfolioBlockOrder) {
         portfolioBlockOrderList.add(portfolioBlockOrder);
+    }
+
+    public void removeBlock(String blockId) {
+        portfolioBlockOrderList.removeIf(p -> p.getBlockId().equals(blockId));
     }
 }
