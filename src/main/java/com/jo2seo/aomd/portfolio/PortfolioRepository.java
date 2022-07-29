@@ -17,6 +17,8 @@ public class PortfolioRepository {
         em.persist(portfolio);
     }
 
+    public void savePortfolioBlock(PortfolioChainOrder portfolioChainOrder) { em.persist(portfolioChainOrder);}
+
     public boolean checkIsMine(String shareUrl, User user) {
         User owner = em.createQuery("select p.user from Portfolio p where p.shareUrl = :shareUrl", User.class)
                 .setParameter("shareUrl", shareUrl)

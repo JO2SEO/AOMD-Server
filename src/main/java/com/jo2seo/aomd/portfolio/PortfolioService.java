@@ -116,4 +116,24 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
         portfolio.updateShared(shared);
     }
+
+    public void addBlock(String shareUrl, String blockId) throws BaseException {
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        /* shareUrl에 해당하는 포트폴리오가 자신의 것이 아니면 exception */
+        boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
+        if (!isMine) {
+            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+        }
+
+        /* TODO: blockId에 해당하는 블록이 자신의 것이 아니면 exception */
+        /* 블록체인과 연결이 구현되면 가능함 */
+
+        log.info("정상적으로 portfolio에 block을 추가함");
+
+        Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
+        PortfolioChainOrder portfolioChainOrder = new PortfolioChainOrder(portfolio, blockId);
+        portfolioRepository.savePortfolioBlock(portfolioChainOrder);
+        portfolio.addNewBlock(portfolioChainOrder);
+    }
 }

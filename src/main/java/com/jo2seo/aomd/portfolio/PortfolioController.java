@@ -55,5 +55,11 @@ public class PortfolioController {
             @Valid @RequestBody PatchPortfolioSharedRequest patchPortfolioSharedRequest
     ) {
         portfolioService.updateShared(shareUrl, patchPortfolioSharedRequest.isShared());
+    @PostMapping("/portfolio/{id}/block")
+    public void postPortfolioChain(
+            @PathVariable("id") String shareUrl,
+            @Valid @RequestBody PostPortfolioBlockRequest postPortfolioBlockRequest
+    ) throws BaseException {
+        portfolioService.addBlock(shareUrl, postPortfolioBlockRequest.getBlockId());
     }
 }

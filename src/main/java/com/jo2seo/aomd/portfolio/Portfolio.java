@@ -70,4 +70,8 @@ public class Portfolio {
     public void updateShared(boolean shared) {
         this.sharing = shared;
     }
+
+    public void addNewBlock(PortfolioChainOrder portfolioChainOrder) {
+        portfolioChainOrderList.add(portfolioChainOrder);
+    }
 }
