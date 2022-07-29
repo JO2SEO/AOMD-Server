@@ -53,9 +53,11 @@ public class PortfolioController {
     @PatchMapping(value = "/portfolio/{id}/sharing")
     public void patchPortfolioSharing(
             @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PatchPortfolioSharedRequest patchPortfolioSharedRequest
+            @Valid @RequestBody PatchPortfolioSharingRequest patchPortfolioSharingRequest
     ) {
-        portfolioService.updateShared(shareUrl, patchPortfolioSharedRequest.isShared());
+        portfolioService.updateSharing(shareUrl, patchPortfolioSharingRequest.isSharing());
+    }
+
     @PostMapping("/portfolio/{id}/block")
     public void postPortfolioChain(
             @PathVariable("id") String shareUrl,

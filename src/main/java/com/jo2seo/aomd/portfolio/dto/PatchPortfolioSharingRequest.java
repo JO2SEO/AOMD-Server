@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-public class PatchPortfolioSharedRequest {
+public class PatchPortfolioSharingRequest {
     @NotNull
-    private boolean shared;
+    private boolean sharing;
 }

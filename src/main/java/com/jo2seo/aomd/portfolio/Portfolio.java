@@ -71,8 +71,8 @@ public class Portfolio {
         portfolioChainOrderList.sort(Comparator.comparingInt(o -> chainIdList.indexOf(o.getChainId())));
     }
 
-    public void updateShared(boolean shared) {
-        this.sharing = shared;
+    public void updateSharing(boolean sharing) {
+        this.sharing = sharing;
     }
 
     public void addNewBlock(PortfolioChainOrder portfolioChainOrder) {

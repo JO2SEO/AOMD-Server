@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +37,8 @@ public class PortfolioService {
     case 1) URL에 해당하는 포트폴리오가 자기 것
     그냥 정보 다 내려줌
     case 2) URL에 해당하는 포트폴리오가 남의 것
-    case 2-1) shared가 true면 정보 다 내려줌(title 제외하고)
-    case 2-2) shared가 false면 isShared를 false로 하고 아무것도 안 내려줌
+    case 2-1) sharing이 true면 정보 다 내려줌(title 제외하고)
+    case 2-2) sharing이 false면 sharing를 false로 하고 아무것도 안 내려줌
     */
     @Transactional(readOnly = true)
     public FindOneByShareUrlResponse findOneByShareUrl(String shareUrl) {
@@ -47,7 +46,7 @@ public class PortfolioService {
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
         boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
-        boolean isShared = portfolioRepository.checkSharing(shareUrl);
+        boolean isSharing = portfolioRepository.checkSharing(shareUrl);
 
         FindOneByShareUrlResponse res;
         if (isMine) {
@@ -61,7 +60,7 @@ public class PortfolioService {
                     portfolioChainOrderList.stream().map(PortfolioChainOrder::getChainId).collect(Collectors.toList())
             );
         } else {
-            if (isShared) {
+            if (isSharing) {
                 Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
                 List<PortfolioChainOrder> portfolioChainOrderList = portfolio.getPortfolioChainOrderList();
                 res =  new FindOneByShareUrlResponse(
@@ -111,12 +110,12 @@ public class PortfolioService {
         portfolio.updateOrder(chainIdList);
     }
 
-    public void updateShared(String shareUrl, boolean shared) {
+    public void updateSharing(String shareUrl, boolean sharing) {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
         Portfolio portfolio = portfolioRepository.findOneByUserAndUrl(user, shareUrl).orElseThrow();
-        portfolio.updateShared(shared);
+        portfolio.updateSharing(sharing);
     }
 
     public void addBlock(String shareUrl, String blockId) throws BaseException {
