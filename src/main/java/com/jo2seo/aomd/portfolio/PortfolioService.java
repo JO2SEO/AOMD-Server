@@ -1,11 +1,14 @@
 package com.jo2seo.aomd.portfolio;
 
+import com.jo2seo.aomd.BaseException;
+import com.jo2seo.aomd.BaseResponseStatus;
 import com.jo2seo.aomd.portfolio.dto.FindOneByShareUrlResponse;
 import com.jo2seo.aomd.portfolio.dto.GetAllResponse;
 import com.jo2seo.aomd.security.SecurityUtil;
 import com.jo2seo.aomd.user.User;
 import com.jo2seo.aomd.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -49,7 +53,6 @@ public class PortfolioService {
         if (isMine) {
             Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
             List<PortfolioChainOrder> portfolioChainOrderList = portfolio.getPortfolioChainOrderList();
-            portfolioChainOrderList.sort(Comparator.comparing(PortfolioChainOrder::getOrderIndex));
             res = new FindOneByShareUrlResponse(
                     portfolio.getTitle(),
                     portfolio.getSharing(),
@@ -61,7 +64,6 @@ public class PortfolioService {
             if (isShared) {
                 Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
                 List<PortfolioChainOrder> portfolioChainOrderList = portfolio.getPortfolioChainOrderList();
-                portfolioChainOrderList.sort(Comparator.comparing(PortfolioChainOrder::getOrderIndex));
                 res =  new FindOneByShareUrlResponse(
                         null,
                         portfolio.getSharing(),
@@ -101,7 +103,7 @@ public class PortfolioService {
         portfolio.updateTitle(title);
     }
 
-    public void updateOrder(String shareUrl, List<String> chainIdList) {
+    public void updateOrder(String shareUrl, List<String> chainIdList) throws BaseException {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 

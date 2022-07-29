@@ -1,5 +1,7 @@
 package com.jo2seo.aomd.portfolio;
 
+import com.jo2seo.aomd.BaseException;
+import com.jo2seo.aomd.BaseResponseStatus;
 import com.jo2seo.aomd.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +40,8 @@ public class Portfolio {
     @NotNull
     private String shareUrl = String.valueOf(UUID.randomUUID());
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "portfolio")
+    @OrderColumn(name = "orderIndex")
     private List<PortfolioChainOrder> portfolioChainOrderList = new ArrayList<>();
 
     @CreatedDate
@@ -56,15 +60,15 @@ public class Portfolio {
         this.title = title;
     }
 
-    public void updateOrder(List<String> chainIdList) {
+    public void updateOrder(List<String> chainIdList) throws BaseException {
+        if (chainIdList.size() != portfolioChainOrderList.size()) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
         for (String chainId : chainIdList) {
-            for (PortfolioChainOrder target : portfolioChainOrderList) {
-                if (target.getChainId().equals(chainId)) {
-                    target.updateOrder(portfolioChainOrderList.indexOf(target));
-                    break;
-                }
+            boolean anyMatch = portfolioChainOrderList.stream().anyMatch(portfolioChainOrder -> portfolioChainOrder.getChainId().equals(chainId));
+            if (!anyMatch) {
+                throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
             }
         }
+        portfolioChainOrderList.sort(Comparator.comparingInt(o -> chainIdList.indexOf(o.getChainId())));
     }
 
     public void updateShared(boolean shared) {

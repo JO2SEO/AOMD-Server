@@ -18,9 +18,9 @@ public class PortfolioChainOrder {
     private Portfolio portfolio;
 
     private String chainId;
-    private Integer orderIndex;
 
-    public void updateOrder(int index) {
-        orderIndex = index;
+    public PortfolioChainOrder(Portfolio portfolio, String chainId) {
+        this.portfolio = portfolio;
+        this.chainId = chainId;
     }
 }

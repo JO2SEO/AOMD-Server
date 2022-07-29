@@ -1,5 +1,6 @@
 package com.jo2seo.aomd.portfolio;
 
+import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponse;
 import com.jo2seo.aomd.portfolio.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class PortfolioController {
     public void patchPortfolioOrder(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PatchPortfolioOrderRequest patchPortfolioOrderRequest
-    ) {
+    ) throws BaseException {
         portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getChainIdList());
     }
 
