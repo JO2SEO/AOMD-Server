@@ -75,6 +75,13 @@ public class Portfolio {
         this.sharing = sharing;
     }
 
+    public boolean blockExists(String blockId) {
+        return portfolioBlockOrderList.stream()
+                .filter(p -> p.getBlockId().equals(blockId))
+                .findAny()
+                .isPresent();
+    }
+
     public void addNewBlock(PortfolioBlockOrder portfolioBlockOrder) {
         portfolioBlockOrderList.add(portfolioBlockOrder);
     }

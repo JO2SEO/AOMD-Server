@@ -123,16 +123,20 @@ public class PortfolioService {
         User user = userRepository.findByEmail(userEmail).orElseThrow();
         /* shareUrl에 해당하는 포트폴리오가 자신의 것이 아니면 exception */
         boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
-        if (!isMine) {
-            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
-        }
+        if (!isMine) throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+
 
         /* TODO: blockId에 해당하는 블록이 자신의 것이 아니면 exception */
         /* 블록체인과 연결이 구현되면 가능함 */
 
+
+
         log.info("정상적으로 portfolio에 block을 추가함");
 
         Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
+        /* 이미 추가된 block이면 throw exception */
+        if (portfolio.blockExists(blockId)) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+
         PortfolioBlockOrder portfolioBlockOrder = new PortfolioBlockOrder(portfolio, blockId);
         portfolioRepository.savePortfolioBlock(portfolioBlockOrder);
         portfolio.addNewBlock(portfolioBlockOrder);
