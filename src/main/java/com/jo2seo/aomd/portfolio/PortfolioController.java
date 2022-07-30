@@ -2,7 +2,7 @@ package com.jo2seo.aomd.portfolio;
 
 import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponse;
-import com.jo2seo.aomd.portfolio.dto.*;
+import com.jo2seo.aomd.portfolio.dto.request.*;
 import com.jo2seo.aomd.portfolio.dto.response.FindOneByShareUrlResponse;
 import com.jo2seo.aomd.portfolio.dto.response.GetAllResponse;
 import lombok.RequiredArgsConstructor;
