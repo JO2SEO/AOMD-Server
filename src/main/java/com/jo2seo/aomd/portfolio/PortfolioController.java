@@ -72,11 +72,13 @@ public class PortfolioController {
 
 
     @PostMapping("/portfolio/{id}/block")
-    public void postPortfolioBlock(
+    public ResponseEntity postPortfolioBlock(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody PostPortfolioBlockRequest postPortfolioBlockRequest
-    ) throws BaseException {
-        portfolioService.addBlock(shareUrl, postPortfolioBlockRequest.getBlockId());
+    ) {
+        boolean added = portfolioService.addBlock(shareUrl, postPortfolioBlockRequest.getBlockId());
+        if (added) return ResponseEntity.status(HttpStatus.CREATED).build();
+        else return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/portfolio/{id}/block")

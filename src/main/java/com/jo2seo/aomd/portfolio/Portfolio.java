@@ -84,8 +84,8 @@ public class Portfolio {
                 .anyMatch(p -> p.getBlockId().equals(blockId));
     }
 
-    public void addNewBlock(PortfolioBlockOrder portfolioBlockOrder) {
-        portfolioBlockOrderList.add(portfolioBlockOrder);
+    public void addNewBlock(String blockId) {
+        portfolioBlockOrderList.add(new PortfolioBlockOrder(this, blockId));
     }
 
     public void removeBlock(String blockId) {

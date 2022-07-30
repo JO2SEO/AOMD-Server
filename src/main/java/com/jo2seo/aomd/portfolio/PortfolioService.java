@@ -2,6 +2,7 @@ package com.jo2seo.aomd.portfolio;
 
 import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.exception.ForbiddenException;
 import com.jo2seo.aomd.portfolio.dto.response.FindOneByShareUrlResponse;
 import com.jo2seo.aomd.portfolio.dto.response.GetAllResponse;
 import com.jo2seo.aomd.security.SecurityUtil;
@@ -100,13 +101,12 @@ public class PortfolioService {
         portfolio.updateSharing(sharing);
     }
 
-    public void addBlock(String shareUrl, String blockId) throws BaseException {
+    public boolean addBlock(String shareUrl, String blockId) {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
         /* shareUrl에 해당하는 포트폴리오가 자신의 것이 아니면 exception */
         boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
-        if (!isMine) throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
-
+        if (!isMine) throw new ForbiddenException();
 
         /* TODO: blockId에 해당하는 블록이 자신의 것이 아니면 exception */
         /* 블록체인과 연결이 구현되면 가능함 */
@@ -116,13 +116,12 @@ public class PortfolioService {
 
         Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
         /* 이미 추가된 block이면 throw exception */
-        if (portfolio.blockExists(blockId)) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+        if (portfolio.blockExists(blockId)) {
+            return false;
+        }
 
-        log.info("정상적으로 portfolio에 block을 추가함");
-
-        PortfolioBlockOrder portfolioBlockOrder = new PortfolioBlockOrder(portfolio, blockId);
-//        portfolioRepository.savePortfolioBlock(portfolioBlockOrder);
-        portfolio.addNewBlock(portfolioBlockOrder);
+        portfolio.addNewBlock(blockId);
+        return true;
     }
 
     public void deleteBlock(String shareUrl, String blockId) throws BaseException {
