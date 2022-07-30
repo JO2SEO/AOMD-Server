@@ -82,10 +82,13 @@ public class PortfolioController {
     }
 
     @DeleteMapping("/portfolio/{id}/block")
-    public void deletePortfolioBlock(
+    public ResponseEntity deletePortfolioBlock(
             @PathVariable("id") String shareUrl,
             @Valid @RequestBody DeletePortfolioBlockRequest deletePortfolioBlockRequest
-    ) throws BaseException {
+    ) {
+        boolean isMine = portfolioService.checkMine(shareUrl);
+        if (!isMine) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         portfolioService.deleteBlock(shareUrl, deletePortfolioBlockRequest.getBlockId());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

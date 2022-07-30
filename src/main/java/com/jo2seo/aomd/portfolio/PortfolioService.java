@@ -124,15 +124,7 @@ public class PortfolioService {
         return true;
     }
 
-    public void deleteBlock(String shareUrl, String blockId) throws BaseException {
-        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
-
-        /* shareUrl에 해당하는 포트폴리오가 자신의 것이 아니면 exception */
-        boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
-        if (!isMine) throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
-
-        /* blockId가 없는 경우 exception없이 끝 => blockId가 있는지 없는지 쿼리를 날려서 알 수 있음. */
+    public void deleteBlock(String shareUrl, String blockId) {
         Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
         portfolio.removeBlock(blockId);
     }
