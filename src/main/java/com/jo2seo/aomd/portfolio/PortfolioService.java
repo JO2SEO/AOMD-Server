@@ -47,6 +47,11 @@ public class PortfolioService {
     }
 
     @Transactional(readOnly = true)
+    public String findIdByShareUrl(String shareUrl) {
+        return portfolioRepository.findIdByUrl(shareUrl).orElseThrow();
+    }
+
+    @Transactional(readOnly = true)
     public FindOneByShareUrlResponse findOneByShareUrl(String shareUrl, boolean isMine) {
         Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
         List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
@@ -79,7 +84,7 @@ public class PortfolioService {
         portfolio.updateTitle(title);
     }
 
-    public void updateOrder(String shareUrl, List<String> blockIdList) throws BaseException {
+    public void updateOrder(String shareUrl, List<String> blockIdList) {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 

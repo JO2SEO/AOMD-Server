@@ -1,10 +1,11 @@
 package com.jo2seo.aomd.portfolio;
 
 import com.jo2seo.aomd.BaseException;
-import com.jo2seo.aomd.BaseResponse;
 import com.jo2seo.aomd.portfolio.dto.request.*;
 import com.jo2seo.aomd.portfolio.dto.response.FindOneByShareUrlResponse;
 import com.jo2seo.aomd.portfolio.dto.response.GetAllResponse;
+import com.jo2seo.aomd.portfolio.dto.response.PatchPortfolioResponse;
+import com.jo2seo.aomd.portfolio.dto.response.PostPortfolioResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,29 +53,23 @@ public class PortfolioController {
         return ResponseEntity.ok(new PostPortfolioResponse(portfolio.getShareUrl(), portfolio.getTitle()));
     }
 
-    @PatchMapping(value = "/portfolio/{id}/title")
-    public void patchPortfolioTitle(
+    @PatchMapping(value = "/portfolio/{id}")
+    public ResponseEntity<PatchPortfolioResponse> patchPortfolio(
             @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PatchPortfolioTitleRequest patchPortfolioTitleRequest
+            @Valid @RequestBody PatchPortfolioRequest patchPortfolioRequest
     ) {
-        portfolioService.updateTitle(shareUrl, patchPortfolioTitleRequest.getTitle());
+        if (patchPortfolioRequest.getTitle() != null) {
+            portfolioService.updateTitle(shareUrl, patchPortfolioRequest.getTitle());
+        }
+        if (patchPortfolioRequest.getSharing() != null) {
+            portfolioService.updateSharing(shareUrl, patchPortfolioRequest.getSharing());
+        }
+        if (patchPortfolioRequest.getOrder() != null) {
+            portfolioService.updateOrder(shareUrl, patchPortfolioRequest.getOrder());
+        }
+        return ResponseEntity.ok(new PatchPortfolioResponse(portfolioService.findIdByShareUrl(shareUrl)));
     }
 
-    @PatchMapping(value = "/portfolio/{id}/order")
-    public void patchPortfolioOrder(
-            @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PatchPortfolioOrderRequest patchPortfolioOrderRequest
-    ) throws BaseException {
-        portfolioService.updateOrder(shareUrl, patchPortfolioOrderRequest.getBlockIdList());
-    }
-
-    @PatchMapping(value = "/portfolio/{id}/sharing")
-    public void patchPortfolioSharing(
-            @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PatchPortfolioSharingRequest patchPortfolioSharingRequest
-    ) {
-        portfolioService.updateSharing(shareUrl, patchPortfolioSharingRequest.isSharing());
-    }
 
     @PostMapping("/portfolio/{id}/block")
     public void postPortfolioBlock(

@@ -30,6 +30,13 @@ public class PortfolioRepository {
                 .getSingleResult();
     }
 
+    public Optional<String> findIdByUrl(String shareUrl) {
+        return Optional.of(em.createQuery("select p.id from Portfolio p where p.shareUrl = :shareUrl", String.class)
+                .setParameter("shareUrl", shareUrl)
+                .getSingleResult()
+        );
+    }
+
     public Optional<Portfolio> findOneByUrl(String shareUrl) {
         return Optional.of(em.createQuery("select p from Portfolio p where p.shareUrl = :shareUrl", Portfolio.class)
                 .setParameter("shareUrl", shareUrl)

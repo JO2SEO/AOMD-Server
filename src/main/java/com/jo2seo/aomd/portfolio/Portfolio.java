@@ -2,6 +2,7 @@ package com.jo2seo.aomd.portfolio;
 
 import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.exception.ForbiddenException;
 import com.jo2seo.aomd.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,12 +61,15 @@ public class Portfolio {
         this.title = title;
     }
 
-    public void updateOrder(List<String> blockList) throws BaseException {
-        if (blockList.size() != portfolioBlockOrderList.size()) throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+    public void updateOrder(List<String> blockList) throws ForbiddenException {
+        if (blockList.size() != portfolioBlockOrderList.size()) {
+            throw new ForbiddenException();
+        }
+
         for (String blockId : blockList) {
             boolean anyMatch = portfolioBlockOrderList.stream().anyMatch(portfolioBlockOrder -> portfolioBlockOrder.getBlockId().equals(blockId));
             if (!anyMatch) {
-                throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+                throw new ForbiddenException();
             }
         }
         portfolioBlockOrderList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
