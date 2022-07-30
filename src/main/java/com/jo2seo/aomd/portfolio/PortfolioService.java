@@ -60,7 +60,7 @@ public class PortfolioService {
         );
     }
 
-    public String createNewPortfolio() {
+    public Portfolio createNewPortfolio() {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
@@ -68,7 +68,7 @@ public class PortfolioService {
 
         Portfolio portfolio = new Portfolio(user, title);
         portfolioRepository.save(portfolio);
-        return portfolio.getShareUrl();
+        return portfolio;
     }
 
     public void updateTitle(String shareUrl, String title) {

@@ -47,9 +47,9 @@ public class PortfolioController {
     }
 
     @PostMapping("/portfolio")
-    public BaseResponse<String> createPortfolio() {
-        String shareUrl = portfolioService.createNewPortfolio();
-        return new BaseResponse(shareUrl);
+    public ResponseEntity<PostPortfolioResponse> postPortfolio() {
+        Portfolio portfolio = portfolioService.createNewPortfolio();
+        return ResponseEntity.ok(new PostPortfolioResponse(portfolio.getShareUrl(), portfolio.getTitle()));
     }
 
     @PatchMapping(value = "/portfolio/{id}/title")
