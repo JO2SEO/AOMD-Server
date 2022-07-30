@@ -3,7 +3,11 @@ package com.jo2seo.aomd.portfolio;
 import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponse;
 import com.jo2seo.aomd.portfolio.dto.*;
+import com.jo2seo.aomd.portfolio.dto.response.FindOneByShareUrlResponse;
+import com.jo2seo.aomd.portfolio.dto.response.GetAllResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,11 +25,25 @@ public class PortfolioController {
         return ResponseEntity.ok(res);
     }
 
+    /*
+    case 1) URL에 해당하는 포트폴리오가 자기 것
+    그냥 정보 다 내려줌
+    case 2) URL에 해당하는 포트폴리오가 남의 것
+    case 2-1) sharing이 true면 정보 다 내려줌
+    case 2-2) sharing이 false면 sharing를 false로 하고 아무것도 안 내려줌
+    */
     @GetMapping("/portfolio/{id}")
-    public BaseResponse<FindOneByShareUrlResponse> getPortfolioByUrl(
+    public ResponseEntity<FindOneByShareUrlResponse> getPortfolioByUrl(
             @PathVariable("id") String shareUrl
     ) {
-        return new BaseResponse(portfolioService.findOneByShareUrl(shareUrl));
+        boolean isMine = portfolioService.checkMine(shareUrl);
+        boolean isSharing = portfolioService.checkSharing(shareUrl);
+        if (!isMine && !isSharing) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(new FindOneByShareUrlResponse(true, null, false, null, null, null));
+        }
+        return ResponseEntity.ok(portfolioService.findOneByShareUrl(shareUrl, isMine));
     }
 
     @PostMapping("/portfolio")

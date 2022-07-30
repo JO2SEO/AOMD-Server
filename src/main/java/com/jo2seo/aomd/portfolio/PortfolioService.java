@@ -33,54 +33,31 @@ public class PortfolioService {
         return allByUser.stream().map(portfolio -> new GetAllResponse(portfolio.getShareUrl(), portfolio.getTitle())).collect(Collectors.toList());
     }
 
-    /*
-    case 1) URL에 해당하는 포트폴리오가 자기 것
-    그냥 정보 다 내려줌
-    case 2) URL에 해당하는 포트폴리오가 남의 것
-    case 2-1) sharing이 true면 정보 다 내려줌(title 제외하고)
-    case 2-2) sharing이 false면 sharing를 false로 하고 아무것도 안 내려줌
-    */
     @Transactional(readOnly = true)
-    public FindOneByShareUrlResponse findOneByShareUrl(String shareUrl) {
+    public boolean checkMine(String shareUrl) {
         String userEmail = SecurityUtil.getCurrentEmail().orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
-        boolean isMine = portfolioRepository.checkIsMine(shareUrl, user);
+        return portfolioRepository.checkIsMine(shareUrl, user);
+    }
 
-        FindOneByShareUrlResponse res;
-        if (isMine) {
-            Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
-            List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
-            res = new FindOneByShareUrlResponse(
-                    portfolio.getTitle(),
-                    portfolio.getSharing(),
-                    portfolio.getCreatedAt(),
-                    portfolio.getUpdatedAt(),
-                    portfolioBlockOrderList.stream().map(PortfolioBlockOrder::getBlockId).collect(Collectors.toList())
-            );
-        } else {
-            boolean isSharing = portfolioRepository.checkSharing(shareUrl);
-            if (isSharing) {
-                Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
-                List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
-                res =  new FindOneByShareUrlResponse(
-                        null,
-                        portfolio.getSharing(),
-                        portfolio.getCreatedAt(),
-                        portfolio.getUpdatedAt(),
-                        portfolioBlockOrderList.stream().map(PortfolioBlockOrder::getBlockId).collect(Collectors.toList())
-                );
-            } else {
-                res = new FindOneByShareUrlResponse (
-                        null,
-                        false,
-                        null,
-                        null,
-                        null
-                );
-            }
-        }
-        return res;
+    @Transactional(readOnly = true)
+    public boolean checkSharing(String shareUrl) {
+        return portfolioRepository.checkSharing(shareUrl);
+    }
+
+    @Transactional(readOnly = true)
+    public FindOneByShareUrlResponse findOneByShareUrl(String shareUrl, boolean isMine) {
+        Portfolio portfolio = portfolioRepository.findOneByUrl(shareUrl).orElseThrow();
+        List<PortfolioBlockOrder> portfolioBlockOrderList = portfolio.getPortfolioBlockOrderList();
+        return new FindOneByShareUrlResponse(
+                !isMine,
+                portfolio.getTitle(),
+                portfolio.getSharing(),
+                portfolio.getCreatedAt(),
+                portfolio.getUpdatedAt(),
+                portfolioBlockOrderList.stream().map(PortfolioBlockOrder::getBlockId).collect(Collectors.toList())
+        );
     }
 
     public String createNewPortfolio() {

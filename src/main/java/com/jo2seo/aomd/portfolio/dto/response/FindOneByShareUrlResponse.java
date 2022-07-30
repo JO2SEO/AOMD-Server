@@ -1,4 +1,4 @@
-package com.jo2seo.aomd.portfolio.dto;
+package com.jo2seo.aomd.portfolio.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class FindOneByShareUrlResponse {
+    Boolean readOnly;
     String title;
     Boolean sharing;
     LocalDateTime createdAt;
