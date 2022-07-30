@@ -2,8 +2,8 @@ package com.jo2seo.aomd.portfolio;
 
 import com.jo2seo.aomd.BaseException;
 import com.jo2seo.aomd.BaseResponseStatus;
-import com.jo2seo.aomd.portfolio.dto.FindOneByShareUrlResponse;
-import com.jo2seo.aomd.portfolio.dto.GetAllResponse;
+import com.jo2seo.aomd.portfolio.dto.response.FindOneByShareUrlResponse;
+import com.jo2seo.aomd.portfolio.dto.response.GetAllResponse;
 import com.jo2seo.aomd.security.SecurityUtil;
 import com.jo2seo.aomd.user.User;
 import com.jo2seo.aomd.user.UserRepository;

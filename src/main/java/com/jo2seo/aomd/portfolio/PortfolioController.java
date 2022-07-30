@@ -16,9 +16,9 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     @GetMapping("/portfolio")
-    public BaseResponse<List<GetAllResponse>> getPortfolioAll() {
+    public ResponseEntity<List<GetAllResponse>> getPortfolioAll() {
         List<GetAllResponse> res = portfolioService.getAll();
-        return new BaseResponse(res);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/portfolio/{id}")
