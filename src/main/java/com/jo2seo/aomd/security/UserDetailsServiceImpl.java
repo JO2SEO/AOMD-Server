@@ -1,7 +1,7 @@
 package com.jo2seo.aomd.security;
 
-import com.jo2seo.aomd.user.User;
-import com.jo2seo.aomd.user.UserRepository;
+import com.jo2seo.aomd.domain.User;
+import com.jo2seo.aomd.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
