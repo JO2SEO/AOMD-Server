@@ -34,7 +34,7 @@ public class TokenProvider {
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-valid-time-in-seconds}") Long tokenValidTime,
+            @Value("${jwt.expiration-time}") Long tokenValidTime,
             AuthenticationManagerBuilder authenticationManagerBuilder
     ) {
         this.secret = secret;
