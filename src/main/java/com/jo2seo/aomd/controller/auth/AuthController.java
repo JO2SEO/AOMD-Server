@@ -1,7 +1,7 @@
 package com.jo2seo.aomd.controller.auth;
 
-import com.jo2seo.aomd.BaseResponse;
-import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.controller.BaseResponse;
+import com.jo2seo.aomd.controller.BaseResponseStatus;
 import com.jo2seo.aomd.service.auth.AuthService;
 import com.jo2seo.aomd.dto.request.KakaoLoginRequest;
 import com.jo2seo.aomd.dto.request.LoginRequest;

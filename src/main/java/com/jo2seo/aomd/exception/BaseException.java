@@ -1,5 +1,6 @@
-package com.jo2seo.aomd;
+package com.jo2seo.aomd.exception;
 
+import com.jo2seo.aomd.controller.BaseResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

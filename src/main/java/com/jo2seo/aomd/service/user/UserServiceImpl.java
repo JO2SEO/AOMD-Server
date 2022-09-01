@@ -1,7 +1,7 @@
 package com.jo2seo.aomd.service.user;
 
-import com.jo2seo.aomd.BaseException;
-import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.exception.BaseException;
+import com.jo2seo.aomd.controller.BaseResponseStatus;
 import com.jo2seo.aomd.security.SecurityUtil;
 import com.jo2seo.aomd.domain.User;
 import com.jo2seo.aomd.repository.user.UserRepository;

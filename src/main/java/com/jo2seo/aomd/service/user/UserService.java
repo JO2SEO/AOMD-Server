@@ -1,6 +1,6 @@
 package com.jo2seo.aomd.service.user;
 
-import com.jo2seo.aomd.BaseException;
+import com.jo2seo.aomd.exception.BaseException;
 import com.jo2seo.aomd.domain.User;
 import com.jo2seo.aomd.dto.request.SignupRequest;
 

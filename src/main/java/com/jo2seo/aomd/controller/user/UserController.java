@@ -1,8 +1,8 @@
 package com.jo2seo.aomd.controller.user;
 
-import com.jo2seo.aomd.BaseException;
-import com.jo2seo.aomd.BaseResponse;
-import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.exception.BaseException;
+import com.jo2seo.aomd.controller.BaseResponse;
+import com.jo2seo.aomd.controller.BaseResponseStatus;
 import com.jo2seo.aomd.file.FileService;
 import com.jo2seo.aomd.service.user.UserService;
 import com.jo2seo.aomd.domain.User;

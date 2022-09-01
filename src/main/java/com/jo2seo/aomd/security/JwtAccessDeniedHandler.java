@@ -1,8 +1,8 @@
 package com.jo2seo.aomd.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jo2seo.aomd.BaseResponse;
-import com.jo2seo.aomd.BaseResponseStatus;
+import com.jo2seo.aomd.controller.BaseResponse;
+import com.jo2seo.aomd.controller.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

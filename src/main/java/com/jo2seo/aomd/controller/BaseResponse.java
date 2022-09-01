@@ -1,4 +1,4 @@
-package com.jo2seo.aomd;
+package com.jo2seo.aomd.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static com.jo2seo.aomd.BaseResponseStatus.SUCCESS;
+import static com.jo2seo.aomd.controller.BaseResponseStatus.SUCCESS;
 
 @Getter
 @AllArgsConstructor

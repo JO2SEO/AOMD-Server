@@ -1,4 +1,4 @@
-package com.jo2seo.aomd;
+package com.jo2seo.aomd.controller;
 
 import lombok.Getter;
 
