@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +28,9 @@ public class UserController {
     @GetMapping("/user/all")
     public BaseResponse getUsers() {
         List<User> users = userService.getUsers();
-        List<GetUserResponse> res = users.stream().map(user -> new GetUserResponse(user.getId(), user.getNickname())).toList();
+        List<GetUserResponse> res = users.stream()
+                .map(user -> new GetUserResponse(user.getId(), user.getNickname()))
+                .collect(Collectors.toList());
         return new BaseResponse(res);
     }
 
@@ -51,7 +54,7 @@ public class UserController {
      * 현재 자신의 정보
      */
     @GetMapping("/user")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize(value = "hasAnyAuthority('USER', 'ADMIN')")
     public BaseResponse getUser() {
         try {
             User user = userService.getMyUser();
