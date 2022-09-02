@@ -2,11 +2,12 @@ package com.jo2seo.aomd.service.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jo2seo.aomd.dto.response.KakaoLoginResponse;
-import com.jo2seo.aomd.file.FileService;
+import com.jo2seo.aomd.controller.auth.dto.BasicLoginRequest;
+import com.jo2seo.aomd.controller.auth.dto.LoginRequest;
 import com.jo2seo.aomd.domain.User;
-import com.jo2seo.aomd.repository.user.UserRepository;
 import com.jo2seo.aomd.domain.UserRole;
+import com.jo2seo.aomd.file.FileService;
+import com.jo2seo.aomd.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +34,7 @@ public class AuthService {
     /*
     TODO: 이미지 서버에 이미지 업로드
     */
-    public KakaoLoginResponse kakaoLogin(final String authorizationCode, final String callbackUrl) throws IOException {
+    public LoginRequest kakaoLogin(final String authorizationCode, final String callbackUrl) throws IOException {
         String kakaoAccessToken = getKakaoAccessToken(authorizationCode, callbackUrl);
         Map kakaoUserMap = getKakaoUser(kakaoAccessToken);
         Map profile = (Map) kakaoUserMap.get("profile");
@@ -48,7 +49,7 @@ public class AuthService {
             userRepository.signup(new User(email, passwordEncoder.encode(password), imgUrl, nickname, UserRole.USER));
         }
 
-        return new KakaoLoginResponse(email, password);
+        return new BasicLoginRequest(email, password);
     }
 
     private String getKakaoAccessToken(String authorizationCode, String callbackUrl) throws JsonProcessingException {

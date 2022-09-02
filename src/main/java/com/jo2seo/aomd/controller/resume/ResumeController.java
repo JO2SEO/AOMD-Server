@@ -20,7 +20,6 @@ public class ResumeController {
     public Long save(
             @Valid @RequestBody PostResumeRequest postResumeRequest
     ) {
-        Long savedId = resumeService.save(postResumeRequest.getPortfolioId(), postResumeRequest.getQuestion(), postResumeRequest.getContent());
-        return savedId;
+        return resumeService.save(postResumeRequest);
     }
 }
