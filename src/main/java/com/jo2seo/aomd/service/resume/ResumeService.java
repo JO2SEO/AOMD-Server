@@ -2,7 +2,7 @@ package com.jo2seo.aomd.service.resume;
 
 import com.jo2seo.aomd.domain.Portfolio;
 import com.jo2seo.aomd.domain.Resume;
-import com.jo2seo.aomd.dto.request.PostResumeRequest;
+import com.jo2seo.aomd.controller.resume.dto.PostResumeRequest;
 import com.jo2seo.aomd.repository.resume.ResumeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

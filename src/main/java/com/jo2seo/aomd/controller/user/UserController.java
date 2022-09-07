@@ -5,7 +5,7 @@ import com.jo2seo.aomd.file.FileService;
 import com.jo2seo.aomd.service.user.UserService;
 import com.jo2seo.aomd.domain.User;
 import com.jo2seo.aomd.controller.user.dto.SignupRequest;
-import com.jo2seo.aomd.dto.response.GetUserResponse;
+import com.jo2seo.aomd.controller.user.dto.GetUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

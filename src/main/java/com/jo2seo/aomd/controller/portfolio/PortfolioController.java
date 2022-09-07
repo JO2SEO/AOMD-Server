@@ -1,14 +1,14 @@
 package com.jo2seo.aomd.controller.portfolio;
 
 import com.jo2seo.aomd.domain.Portfolio;
-import com.jo2seo.aomd.dto.request.DeletePortfolioBlockRequest;
-import com.jo2seo.aomd.dto.request.PatchPortfolioRequest;
-import com.jo2seo.aomd.dto.request.PostPortfolioBlockRequest;
+import com.jo2seo.aomd.controller.portfolio.dto.DeletePortfolioBlockRequest;
+import com.jo2seo.aomd.controller.portfolio.dto.PatchPortfolioRequest;
+import com.jo2seo.aomd.controller.portfolio.dto.PostPortfolioBlockRequest;
 import com.jo2seo.aomd.service.portfolio.PortfolioService;
-import com.jo2seo.aomd.dto.response.FindOneByShareUrlResponse;
-import com.jo2seo.aomd.dto.response.GetAllResponse;
-import com.jo2seo.aomd.dto.response.PatchPortfolioResponse;
-import com.jo2seo.aomd.dto.response.PostPortfolioResponse;
+import com.jo2seo.aomd.controller.portfolio.dto.FindOneByShareUrlResponse;
+import com.jo2seo.aomd.controller.portfolio.dto.GetAllResponse;
+import com.jo2seo.aomd.controller.portfolio.dto.PatchPortfolioResponse;
+import com.jo2seo.aomd.controller.portfolio.dto.PostPortfolioResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

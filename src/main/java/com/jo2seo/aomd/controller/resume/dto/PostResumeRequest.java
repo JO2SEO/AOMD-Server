@@ -1,4 +1,4 @@
-package com.jo2seo.aomd.dto.request;
+package com.jo2seo.aomd.controller.resume.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.jo2seo.aomd.dto.response;
+package com.jo2seo.aomd.controller.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

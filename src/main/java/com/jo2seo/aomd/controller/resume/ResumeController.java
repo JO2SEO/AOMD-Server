@@ -1,6 +1,6 @@
 package com.jo2seo.aomd.controller.resume;
 
-import com.jo2seo.aomd.dto.request.PostResumeRequest;
+import com.jo2seo.aomd.controller.resume.dto.PostResumeRequest;
 import com.jo2seo.aomd.service.resume.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
