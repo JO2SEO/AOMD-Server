@@ -1,9 +1,9 @@
 package com.jo2seo.aomd.security;
 
+import com.jo2seo.aomd.controller.auth.dto.LoginRequest;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.*;
 import io.jsonwebtoken.security.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.authentication.*;
@@ -43,18 +43,22 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String createToken(final String email, final String password) {
+    public String createToken(final LoginRequest loginRequest, long duration) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(email, password);
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword());
 
-        Authentication authentication = authenticationManagerBuilder
-                .getObject()
-                .authenticate(usernamePasswordAuthenticationToken);
+        log.info("Tlqkf");
+        Authentication authentication = 
+                authenticationManagerBuilder
+                        .getObject()
+                        .authenticate(usernamePasswordAuthenticationToken);
 
-        return createToken(authentication);
+        return createToken(authentication, duration);
     }
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, long duration) {
         /* Authority 정보를 String 으로 변환 */
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -62,7 +66,7 @@ public class TokenProvider {
 
         /* 유효 기간 설정 */
         Long now = (new Date()).getTime();
-        Date expireTime = new Date(now + this.tokenValidTime * 1000);
+        Date expireTime = new Date(now + duration * 1000);
 
         /* jwt 토큰 String 생성 */
         return Jwts.builder()

@@ -22,8 +22,7 @@ jwt:
   # test secret
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   expiration-time: 3600
-  jwt-prefix: jwt
-  header-string: Authorization
+#  jwt-prefix: jwt
 ---
 spring:
   config:

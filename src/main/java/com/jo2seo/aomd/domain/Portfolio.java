@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 public class Portfolio {
+    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_id")
     private Long id;
@@ -40,7 +41,7 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "orderIndex")
-    private List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
+    private final List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -5,6 +5,7 @@ import com.jo2seo.aomd.controller.BaseResponse;
 import com.jo2seo.aomd.controller.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -26,17 +27,17 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         String jwt = resolveToken(request);
+        
         // 유효한 자격증명을 제공하지 않고 접근하려 할때 401
-
         log.debug("request = " + request + ", response = " + response + ", authException = " + authException);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=utf-8");
 
         ObjectMapper objectMapper = new ObjectMapper();
         boolean isFailedToLogin = authException instanceof BadCredentialsException;
-        boolean isEmptyJwt = StringUtils.hasText(jwt) == false;
+        boolean isEmptyJwt = !StringUtils.hasText(jwt);
         if (isFailedToLogin) {
-            objectMapper.writeValue(response.getWriter(), new BaseResponse(BaseResponseStatus.FAILED_TO_LOGIN));
+            objectMapper.writeValue(response.getWriter(), new ResponseEntity<>("없는 아이디", HttpStatus.FORBIDDEN));
         } else if (isEmptyJwt) {
                 objectMapper.writeValue(response.getWriter(), new BaseResponse(BaseResponseStatus.EMPTY_JWT));
         } else {

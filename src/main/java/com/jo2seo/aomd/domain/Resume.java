@@ -1,6 +1,5 @@
 package com.jo2seo.aomd.domain;
 
-import com.jo2seo.aomd.domain.Portfolio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
