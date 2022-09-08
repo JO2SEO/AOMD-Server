@@ -53,7 +53,7 @@ public class PortfolioRepository {
         );
     }
 
-    public List<Portfolio> findAllByUser(Member member) {
+    public List<Portfolio> findAllByMember(Member member) {
         return em.createQuery("select p from Portfolio p where p.member = :member")
                 .setParameter("member", member)
                 .getResultList();
