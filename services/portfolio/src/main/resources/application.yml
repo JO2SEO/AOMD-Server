@@ -1,0 +1,64 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/Desktop/Dev/local/Spring/security
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari:
+      initialization-fail-timeout: 60000
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    logging.level:
+      org.hibernate.SQL: debug
+  profiles:
+    group:
+      h2: "h2"
+      docker: "docker"
+      mysql: "mysql"
+      dev: "dev"
+      prod: "prod"
+
+jwt:
+  # test secret
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  expiration-time: 3600
+#  jwt-prefix: jwt
+---
+spring:
+  config:
+    activate:
+      on-profile: "mysql"
+    import: mysql-datasource.yml
+  datasource:
+    url: jdbc:mysql://localhost:3306/aomd-db
+    username: root
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: "docker"
+    import: mysql-datasource.yml
+  datasource:
+    
+  jpa:
+    hibernate:
+      ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+    import: mysql-datasource.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  jpa:
+    hibernate:
+      ddl-auto: none
