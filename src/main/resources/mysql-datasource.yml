@@ -1,8 +1,0 @@
-spring:
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQl57Dialect
-        show_sql: true
-        format_sql: true
-        default_batch_fetch_size: 1000
