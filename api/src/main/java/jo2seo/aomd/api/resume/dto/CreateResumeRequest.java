@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-public class PostResumeRequest {
+public class CreateResumeRequest {
     @NotNull
     private Long portfolioId;
     @NotNull
