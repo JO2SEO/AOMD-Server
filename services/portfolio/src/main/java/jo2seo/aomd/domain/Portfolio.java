@@ -43,6 +43,9 @@ public class Portfolio {
     @OrderColumn(name = "orderIndex")
     private final List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Resume> resumeList = new ArrayList<>();
+
     @CreatedDate
     private LocalDateTime createdAt;
 
