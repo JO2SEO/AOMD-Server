@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -40,6 +41,23 @@ public class Member {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, profileImgUrl, nickname);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Member that = (Member) obj;
+        return id.equals(that.getId()) &&
+                email.equals(that.getEmail()) &&
+                password.equals(that.getPassword()) &&
+                profileImgUrl.equals(that.getProfileImgUrl()) &&
+                nickname.equals(that.getNickname());
+    }
 
     public void updateProfileImgUrl(String profileImgUrl) {
         this.profileImgUrl = profileImgUrl;
