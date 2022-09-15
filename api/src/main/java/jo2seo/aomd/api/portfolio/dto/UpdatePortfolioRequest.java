@@ -4,10 +4,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class PatchPortfolioSharingRequest {
+public class UpdatePortfolioRequest {
+    
     @NotNull
-    private boolean sharing;
+    private String title;
+
+    @NotNull
+    private Boolean sharing;
+
+    @NotNull
+    private List<String> order;
 }

@@ -2,16 +2,15 @@ package jo2seo.aomd.api.resume.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
+import org.springframework.lang.Nullable;
 
 @Getter
 @NoArgsConstructor
-public class PostResumeRequest {
-    @NotNull
-    private Long portfolioId;
-    @NotNull
+public class UpdateResumeRequest {
+    
+    @Nullable
     private String question;
-    @NotNull
+
+    @Nullable
     private String content;
 }

@@ -3,7 +3,7 @@ package jo2seo.aomd.service.user;
 import jo2seo.aomd.api.member.dto.SignupRequest;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.domain.UserRole;
-import jo2seo.aomd.exception.AlreadyInUserException;
+import jo2seo.aomd.exception.AlreadyInMemberException;
 import jo2seo.aomd.repository.user.MemberRepository;
 import jo2seo.aomd.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void signup(SignupRequest signupRequest) {
         if (memberRepository.findMemberByEmail(signupRequest.getEmail()).isPresent()) {
-            throw new AlreadyInUserException("Email Duplicate");
+            throw new AlreadyInMemberException();
         }
         memberRepository.save(new Member(
                 signupRequest.getEmail(),

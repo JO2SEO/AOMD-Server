@@ -1,5 +1,6 @@
 package jo2seo.aomd.controller.member;
 
+import jo2seo.aomd.api.member.MemberController;
 import jo2seo.aomd.api.member.dto.GetUserResponse;
 import jo2seo.aomd.api.member.dto.SignupRequest;
 import jo2seo.aomd.domain.Member;
@@ -18,7 +19,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberController implements jo2seo.aomd.api.member.MemberController {
+public class MemberControllerImpl implements MemberController {
     private final MemberService memberService;
     private final FileService fileService;
 
