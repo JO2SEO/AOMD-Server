@@ -12,24 +12,25 @@ public interface PortfolioController {
     @GetMapping("/portfolio")
     ResponseEntity getPortfolioAll();
 
-    @GetMapping("/portfolio/{id}")
-    ResponseEntity getPortfolioByUrl(
-            @PathVariable("id") String shareUrl
-    );
+    @GetMapping("/portfolio/{shareUrl}")
+    ResponseEntity sharedPortfolioOpen(@PathVariable("shareUrl") String shareUrl);
 
     @PostMapping("/portfolio")
-    ResponseEntity createPortfolio();
+    ResponseEntity createPortfolio(@RequestBody CreatePortfolioRequest createPortfolioRequest);
+
+    @GetMapping("/portfolio/{id}")
+    ResponseEntity openMyPortFolio(@PathVariable("id") Long portfolioId);
 
     @PatchMapping(value = "/portfolio/{id}")
     ResponseEntity updatePortfolio(
             @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PatchPortfolioRequest patchPortfolioRequest
+            @Valid @RequestBody UpdatePortfolioRequest updatePortfolioRequest
     );
 
     @PostMapping("/portfolio/{id}/block")
     ResponseEntity createPortfolioBlock(
             @PathVariable("id") String shareUrl,
-            @Valid @RequestBody PostPortfolioBlockRequest postPortfolioBlockRequest
+            @Valid @RequestBody CreatePortfolioBlockRequest createPortfolioBlockRequest
     );
 
     @DeleteMapping("/portfolio/{id}/block")
