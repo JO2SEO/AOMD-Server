@@ -1,11 +1,12 @@
 #!/bin/bash
 
+DOCKER_NAME="aomd-server"
+
 if [ $# -lt 1 ]; then
-  echo "docker-build.sh [TAG] [push]"
+  echo "docker build -t $DOCKER_NAME/portfolio:latest ."
+  docker build -t $DOCKER_NAME/portfolio ./services/portfolio
   exit 1
 fi
-
-DOCKER_NAME="aomd-server"
 
 VERSION_TAG=$1
 
