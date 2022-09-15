@@ -18,7 +18,7 @@ public interface PortfolioController {
     @PostMapping("/portfolio")
     ResponseEntity createPortfolio(@RequestBody CreatePortfolioRequest createPortfolioRequest);
 
-    @GetMapping("/portfolio/{id}")
+    @GetMapping("/portfolio/me/{id}")
     ResponseEntity openMyPortFolio(@PathVariable("id") Long portfolioId);
 
     @PatchMapping(value = "/portfolio/{id}")
