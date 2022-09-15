@@ -1,4 +1,4 @@
-package jo2seo.aomd.service.portfolio;
+package jo2seo.aomd.service.portfolio.validation;
 
 import jo2seo.aomd.domain.Portfolio;
 
