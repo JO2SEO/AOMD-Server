@@ -2,11 +2,13 @@ package jo2seo.aomd.repository.portfolio;
 
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.domain.Member;
+import jo2seo.aomd.domain.Resume;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -18,22 +20,10 @@ public class PortfolioRepository {
         em.persist(portfolio);
     }
 
-    public boolean checkIsMine(String shareUrl, Member member) {
-        Member owner = em.createQuery("select p.member from Portfolio p where p.shareUrl = :shareUrl", Member.class)
-                .setParameter("shareUrl", shareUrl)
-                .getSingleResult();
-        return owner.equals(member);
-    }
 
-    public boolean checkSharing(String shareUrl) {
-        return em.createQuery("select p.sharing from Portfolio p where p.shareUrl = :shareUrl", Boolean.class)
-                .setParameter("shareUrl", shareUrl)
-                .getSingleResult();
-    }
-
-    public Optional<String> findIdByUrl(String shareUrl) {
-        return Optional.of(em.createQuery("select p.id from Portfolio p where p.shareUrl = :shareUrl", String.class)
-                .setParameter("shareUrl", shareUrl)
+    public Optional<Portfolio> findOneById(Long portfolioId) {
+        return Optional.of(em.createQuery("select p from Portfolio p where p.id = :id ", Portfolio.class)
+                .setParameter("id", portfolioId)
                 .getSingleResult()
         );
     }
