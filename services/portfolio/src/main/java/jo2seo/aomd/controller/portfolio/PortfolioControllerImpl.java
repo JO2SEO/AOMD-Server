@@ -5,8 +5,9 @@ import jo2seo.aomd.api.portfolio.dto.*;
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.exception.Member.NoAuthenticationException;
 import jo2seo.aomd.security.SecurityUtil;
-import jo2seo.aomd.service.portfolio.PortfolioService;
+import jo2seo.aomd.service.portfolio.PortfolioCRUDService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,11 +15,12 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PortfolioControllerImpl implements PortfolioController {
-
-    private final PortfolioService portfolioService;
+    
+    private final PortfolioCRUDService portfolioService;
 
 
     @Override

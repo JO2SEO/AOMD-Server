@@ -1,8 +1,6 @@
 package jo2seo.aomd.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jo2seo.aomd.controller.BaseResponse;
-import jo2seo.aomd.controller.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static jo2seo.aomd.exception.ExceptionType.*;
 
 @Component
 @Slf4j
@@ -37,11 +37,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         boolean isFailedToLogin = authException instanceof BadCredentialsException;
         boolean isEmptyJwt = !StringUtils.hasText(jwt);
         if (isFailedToLogin) {
-            objectMapper.writeValue(response.getWriter(), new ResponseEntity<>("없는 아이디", HttpStatus.FORBIDDEN));
+            objectMapper.writeValue(response.getWriter(), new ResponseEntity(MEMBER_INFORMATION_NOT_FOUND.getDetail(), MEMBER_INFORMATION_NOT_FOUND.getHttpStatus()));
         } else if (isEmptyJwt) {
-                objectMapper.writeValue(response.getWriter(), new BaseResponse(BaseResponseStatus.EMPTY_JWT));
+                objectMapper.writeValue(response.getWriter(), new ResponseEntity(TOKEN_NOT_FOUND.getDetail(), TOKEN_NOT_FOUND.getHttpStatus()));
         } else {
-            objectMapper.writeValue(response.getWriter(), new BaseResponse(BaseResponseStatus.INVALID_JWT));
+            objectMapper.writeValue(response.getWriter(), new ResponseEntity(INVALID_TOKEN.getDetail(), INVALID_TOKEN.getHttpStatus()));
         }
     }
 

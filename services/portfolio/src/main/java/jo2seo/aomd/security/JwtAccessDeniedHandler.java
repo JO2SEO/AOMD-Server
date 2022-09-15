@@ -1,9 +1,8 @@
 package jo2seo.aomd.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jo2seo.aomd.controller.BaseResponse;
-import jo2seo.aomd.controller.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static jo2seo.aomd.exception.ExceptionType.INVALID_TOKEN;
 
 @Component
 @Slf4j
@@ -24,6 +25,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType("application/json;charset=utf-8");
 
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(response.getWriter(), new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT));
+        objectMapper.writeValue(response.getWriter(), new ResponseEntity<>(INVALID_TOKEN.getDetail(), INVALID_TOKEN.getHttpStatus()));
     }
 }
