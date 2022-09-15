@@ -1,6 +1,8 @@
 package jo2seo.aomd.domain;
 
-import jo2seo.aomd.exception.ForbiddenException;
+import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
+import jo2seo.aomd.exception.portfolio.BlockExistException;
+import jo2seo.aomd.exception.portfolio.BlockListNotMatchingException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -58,21 +61,29 @@ public class Portfolio {
         this.title = title;
     }
 
+    public void updateAll(UpdatePortfolioRequest request) {
+        updateTitle(request.getTitle());
+        updateOrder(request.getOrder());
+        updateSharing(request.getSharing());
+    }
+    
     public void updateTitle(String title) {
         this.title = title;
     }
 
-    public void updateOrder(List<String> blockList) throws ForbiddenException {
+    public void updateOrder(List<String> blockList) {
         if (blockList.size() != portfolioBlockOrderList.size()) {
-            throw new ForbiddenException();
+            throw new BlockListNotMatchingException();
         }
-
-        for (String blockId : blockList) {
-            boolean anyMatch = portfolioBlockOrderList.stream().anyMatch(portfolioBlockOrder -> portfolioBlockOrder.getBlockId().equals(blockId));
-            if (!anyMatch) {
-                throw new ForbiddenException();
+        
+        blockList.forEach(
+            (blockId) -> {
+                boolean anyMatch = portfolioBlockOrderList.stream()
+                        .anyMatch(portfolioBlockOrder -> portfolioBlockOrder.getBlockId().equals(blockId));
+                if (!anyMatch) throw new BlockListNotMatchingException();
             }
-        }
+        );
+        
         portfolioBlockOrderList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
     }
 
@@ -86,6 +97,12 @@ public class Portfolio {
     }
 
     public void addNewBlock(String blockId) {
+        List<PortfolioBlockOrder> exists = portfolioBlockOrderList.stream()
+                .filter(pbo -> pbo.getBlockId().equals(blockId))
+                .collect(Collectors.toList());
+        if(!exists.isEmpty()){
+            throw new BlockExistException();
+        }
         portfolioBlockOrderList.add(new PortfolioBlockOrder(this, blockId));
     }
 
