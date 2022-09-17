@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: blockchain.yml
   datasource:
     url: jdbc:h2:tcp://localhost/~/Desktop/Dev/local/Spring/security
     username: sa
@@ -13,9 +15,9 @@ spring:
       org.hibernate.SQL: debug
   profiles:
     group:
+      test: "test"
       h2: "h2"
       docker: "docker"
-      mysql: "mysql"
       dev: "dev"
       prod: "prod"
 
@@ -25,19 +27,17 @@ jwt:
 
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
+
 ---
 spring:
   config:
     activate:
-      on-profile: "mysql"
-    import: mysql-datasource.yml
+      on-profile: "test"
   datasource:
-    url: jdbc:mysql://localhost:3306/aomd-db
-    username: root
-    password: 
-  jpa:
-    hibernate:
-      ddl-auto: create
+    url:
+    username:
+    password:
+    driver-class-name:
 ---
 spring:
   config:
