@@ -6,20 +6,24 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-public class BlockChainUrl {
-    @Value("${blockchain.server.asset.award.get-all}")
-    private String awardGetAll;
-    @Value("${blockchain.server.asset.license.get-all}")
-    private String licenseGetAll;
-    @Value("${blockchain.server.asset.education.get-all}")
-    private String educationGetAll;
+public class BlockchainUrl {
+    @Value("${blockchain.server.domain}")
+    private String domain;
+    @Value("${blockchain.server.port}")
+    private String port;
+    @Value("${blockchain.server.asset.award.all}")
+    private String awardList;
+    @Value("${blockchain.server.asset.license.all}")
+    private String licenseList;
+    @Value("${blockchain.server.asset.education.all}")
+    private String educationList;
     
-    @Value("${blockchain.server.asset.award.get}")
-    private String awardGet;
-    @Value("${blockchain.server.asset.license.get}")
-    private String licenseGet;
-    @Value("${blockchain.server.asset.education.get}")
-    private String educationGet;
+    @Value("${blockchain.server.asset.award.one}")
+    private String award;
+    @Value("${blockchain.server.asset.license.one}")
+    private String license;
+    @Value("${blockchain.server.asset.education.one}")
+    private String education;
 
     @Value("${blockchain.server.asset.award.create}")
     private String awardCreateCreate;
