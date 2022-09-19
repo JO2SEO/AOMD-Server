@@ -3,9 +3,11 @@ package jo2seo.aomd.service.portfolio;
 import jo2seo.aomd.blockchain.BlockchainGateway;
 import jo2seo.aomd.blockchain.BlockchainUrl;
 import jo2seo.aomd.domain.Block.Award;
+import jo2seo.aomd.domain.Block.Block;
 import jo2seo.aomd.domain.Block.Education;
 import jo2seo.aomd.domain.Block.License;
 import jo2seo.aomd.domain.Block.dto.AwardDto;
+import jo2seo.aomd.domain.Block.dto.BlockDto;
 import jo2seo.aomd.domain.Block.dto.EducationDto;
 import jo2seo.aomd.domain.Block.dto.LicenseDto;
 import jo2seo.aomd.domain.Member;
@@ -30,38 +32,39 @@ public class PortfolioBlockchainService {
 
     
     public List<AwardDto> findAwardListByMemberId(String memberEmail) {
-        Member member = memberRepository.findMemberByEmail(memberEmail)
-                .orElseThrow(MemberNotFoundException::new);
-        
-        return blockChainGateway.getBlockList(
-                blockChainGateway.createQueryUrl(
-                        blockChainUrl.getAwardList(),
-                        new ArrayList<>(),
-                        Map.of("memberId", member.getId().toString())),
+        return (List<AwardDto>) findBlockList(
+                memberEmail,
+                blockChainUrl.getAwardList(),
+                new ArrayList<>(),
                 Award.class);
     }
 
     public List<EducationDto> findEducationListByMemberId(String memberEmail) {
-        Member member = memberRepository.findMemberByEmail(memberEmail)
-                .orElseThrow(MemberNotFoundException::new);
-
-        return blockChainGateway.getBlockList(
-                blockChainGateway.createQueryUrl(
-                        blockChainUrl.getEducationList(),
-                        new ArrayList<>(),
-                        Map.of("memberId", member.getId().toString())),
+        return (List<EducationDto>) findBlockList(
+                memberEmail,
+                blockChainUrl.getEducationList(),
+                new ArrayList<>(),
                 Education.class);
     }
 
     public List<LicenseDto> findLicenseListByMemberId(String memberEmail) {
+        return (List<LicenseDto>) findBlockList(
+                memberEmail, 
+                blockChainUrl.getLicenseList(), 
+                new ArrayList<>(), 
+                License.class);
+    }
+
+    private <B extends Block> List<?> findBlockList(String memberEmail, String url, List<String> pathVariables, Class<B> blockClass) {
         Member member = memberRepository.findMemberByEmail(memberEmail)
                 .orElseThrow(MemberNotFoundException::new);
 
         return blockChainGateway.getBlockList(
                 blockChainGateway.createQueryUrl(
-                        blockChainUrl.getLicenseList(),
-                        new ArrayList<>(),
+                        url, 
+                        pathVariables, 
                         Map.of("memberId", member.getId().toString())),
-                License.class);
+                blockClass
+        );
     }
 }
