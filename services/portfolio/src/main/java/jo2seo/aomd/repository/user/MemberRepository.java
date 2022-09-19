@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, String> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Transactional(readOnly = true)
     Optional<Member> findMemberByEmail(String email);
