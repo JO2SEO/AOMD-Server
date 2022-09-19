@@ -7,7 +7,6 @@ import jo2seo.aomd.domain.Block.Block;
 import jo2seo.aomd.domain.Block.Education;
 import jo2seo.aomd.domain.Block.License;
 import jo2seo.aomd.domain.Block.dto.AwardDto;
-import jo2seo.aomd.domain.Block.dto.BlockDto;
 import jo2seo.aomd.domain.Block.dto.EducationDto;
 import jo2seo.aomd.domain.Block.dto.LicenseDto;
 import jo2seo.aomd.domain.Member;
