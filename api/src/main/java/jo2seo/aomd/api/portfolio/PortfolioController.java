@@ -1,6 +1,7 @@
 package jo2seo.aomd.api.portfolio;
 
 import jo2seo.aomd.api.portfolio.dto.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,10 @@ import javax.validation.Valid;
 public interface PortfolioController {
 
     @GetMapping("/portfolio")
-    ResponseEntity getPortfolioAll();
+    ResponseEntity findAllMyPortfolioByMember();
+    
+    @GetMapping("/simple-portfolio")
+    ResponseEntity getSimplePortfolioAllByMember();
 
     @GetMapping("/portfolio/{shareUrl}")
     ResponseEntity sharedPortfolioOpen(@PathVariable("shareUrl") String shareUrl);

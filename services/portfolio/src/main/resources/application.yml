@@ -15,7 +15,6 @@ spring:
       org.hibernate.SQL: debug
   profiles:
     group:
-      test: "test"
       h2: "h2"
       docker: "docker"
       dev: "dev"
@@ -28,16 +27,6 @@ jwt:
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 
----
-spring:
-  config:
-    activate:
-      on-profile: "test"
-  datasource:
-    url:
-    username:
-    password:
-    driver-class-name:
 ---
 spring:
   config:

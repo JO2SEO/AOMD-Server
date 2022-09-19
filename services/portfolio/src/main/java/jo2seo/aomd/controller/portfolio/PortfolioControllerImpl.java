@@ -4,8 +4,9 @@ import jo2seo.aomd.api.portfolio.PortfolioController;
 import jo2seo.aomd.api.portfolio.dto.*;
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.exception.Member.NoAuthenticationException;
-import jo2seo.aomd.security.SecurityUtil;
+import jo2seo.aomd.service.portfolio.PortfolioBlockchainService;
 import jo2seo.aomd.service.portfolio.PortfolioCRUDService;
+import jo2seo.aomd.service.resume.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static jo2seo.aomd.security.SecurityUtil.getCurrentEmail;
 import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
@@ -22,10 +24,18 @@ public class PortfolioControllerImpl implements PortfolioController {
     
     private final PortfolioCRUDService portfolioService;
 
+    private final PortfolioBlockchainService portfolioBlockchainService;
+
+    private final ResumeService resumeService;
 
     @Override
-    public ResponseEntity getPortfolioAll() {
-        List<GetAllPortfolioTitle> allPortfolio = portfolioService.findAll();
+    public ResponseEntity findAllMyPortfolioByMember() {
+        return new ResponseEntity(portfolioService.findAllByMember(), OK);
+    }
+
+    @Override
+    public ResponseEntity getSimplePortfolioAllByMember() {
+        List<PortfolioTitleDto> allPortfolio = portfolioService.findSimpleAllByMember();
         return new ResponseEntity(allPortfolio, OK);
     }
 
@@ -37,9 +47,9 @@ public class PortfolioControllerImpl implements PortfolioController {
 
     @Override
     public ResponseEntity openMyPortFolio(Long portfolioId) {
-        String userEmail = SecurityUtil.getCurrentEmail()
+        String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
-        Portfolio portfolio = portfolioService.checkMineAndGet(userEmail, portfolioId);
+        Portfolio portfolio = portfolioService.checkMineAndGet(memberEmail, portfolioId);
         return new ResponseEntity(portfolio, OK);
     }
 
