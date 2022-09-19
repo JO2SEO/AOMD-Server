@@ -1,17 +1,18 @@
-package jo2seo.aomd.service.user;
+package jo2seo.aomd.service.member;
 
 import jo2seo.aomd.api.member.dto.SignupRequest;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.domain.UserRole;
 import jo2seo.aomd.exception.AlreadyInMemberException;
 import jo2seo.aomd.repository.user.MemberRepository;
-import jo2seo.aomd.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static jo2seo.aomd.security.SecurityUtil.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public Member getMyMember() {
-        Member member = SecurityUtil.getCurrentEmail()
+        Member member = getCurrentEmail()
                 .flatMap(memberRepository::findMemberByEmail)
                 .orElseThrow(() -> new RuntimeException("Cannot find member by email"));
         return member;
