@@ -30,12 +30,12 @@ public class PortfolioControllerImpl implements PortfolioController {
 
     @Override
     public ResponseEntity findAllMyPortfolioByMember() {
-        return new ResponseEntity(portfolioService.findAllByMember(), OK);
+        return new ResponseEntity(portfolioService.findAllPortfolioByMember(), OK);
     }
 
     @Override
     public ResponseEntity getSimplePortfolioAllByMember() {
-        List<PortfolioTitleDto> allPortfolio = portfolioService.findSimpleAllByMember();
+        List<PortfolioTitleDto> allPortfolio = portfolioService.findSimplePortfolioAllByMember();
         return new ResponseEntity(allPortfolio, OK);
     }
 

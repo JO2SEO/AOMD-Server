@@ -1,7 +1,6 @@
 package jo2seo.aomd.service.portfolio;
 
 import jo2seo.aomd.api.portfolio.dto.PortfolioCompositeDto;
-import jo2seo.aomd.api.portfolio.dto.PortfolioDto;
 import jo2seo.aomd.api.portfolio.dto.PortfolioTitleDto;
 import jo2seo.aomd.domain.Portfolio;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +10,10 @@ import java.util.List;
 public interface PortfolioReadService {
 
     @Transactional(readOnly = true)
-    List<PortfolioCompositeDto> findAllByMember();
+    List<PortfolioCompositeDto> findAllPortfolioByMember();
 
     @Transactional(readOnly = true)
-    List<PortfolioTitleDto> findSimpleAllByMember();
+    List<PortfolioTitleDto> findSimplePortfolioAllByMember();
 
     @Transactional(readOnly = true)
     Portfolio findByUrl(String shareUrl);

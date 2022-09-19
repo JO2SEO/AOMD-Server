@@ -38,7 +38,7 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
     
     
     @Override
-    public List<PortfolioCompositeDto> findAllByMember() {
+    public List<PortfolioCompositeDto> findAllPortfolioByMember() {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
         Member member = memberRepository.findMemberByEmail(memberEmail)
@@ -63,7 +63,7 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
                 .collect(Collectors.toList());
     }
     @Override
-    public List<PortfolioTitleDto> findSimpleAllByMember() {
+    public List<PortfolioTitleDto> findSimplePortfolioAllByMember() {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
         Member member = memberRepository.findMemberByEmail(memberEmail)
