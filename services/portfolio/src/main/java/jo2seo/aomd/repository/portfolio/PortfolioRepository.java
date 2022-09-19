@@ -1,51 +1,30 @@
 package jo2seo.aomd.repository.portfolio;
 
-import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.domain.Member;
-import jo2seo.aomd.domain.Resume;
-import lombok.RequiredArgsConstructor;
+import jo2seo.aomd.domain.Portfolio;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class PortfolioRepository {
-    private final EntityManager em;
+public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
 
-    public void save(Portfolio portfolio) {
-        em.persist(portfolio);
-    }
+    @Override
+    Portfolio save(Portfolio portfolio);
+    
+    @Override
+    @Transactional(readOnly = true)
+    Optional<Portfolio> findById(Long portfolioId);
 
+    @Transactional(readOnly = true)
+    Optional<Portfolio> findByShareUrl(String shareUrl);
 
-    public Optional<Portfolio> findOneById(Long portfolioId) {
-        return Optional.of(em.createQuery("select p from Portfolio p where p.id = :id ", Portfolio.class)
-                .setParameter("id", portfolioId)
-                .getSingleResult()
-        );
-    }
+    @Transactional(readOnly = true)
+    Optional<Portfolio> findByMemberAndShareUrl(Member member, String shareUrl);
 
-    public Optional<Portfolio> findOneByUrl(String shareUrl) {
-        return Optional.of(em.createQuery("select p from Portfolio p where p.shareUrl = :shareUrl", Portfolio.class)
-                .setParameter("shareUrl", shareUrl)
-                .getSingleResult()
-        );
-    }
-
-    public Optional<Portfolio> findOneByUserAndUrl(Member member, String shareUrl) {
-        return Optional.of(em.createQuery("select p from Portfolio p where p.member = :member and p.shareUrl = :shareUrl", Portfolio.class)
-                .setParameter("member", member)
-                .setParameter("shareUrl", shareUrl)
-                .getSingleResult()
-        );
-    }
-
-    public List<Portfolio> findAllByMember(Member member) {
-        return em.createQuery("select p from Portfolio p where p.member = :member")
-                .setParameter("member", member)
-                .getResultList();
-    }
+    @Transactional(readOnly = true)
+    List<Portfolio> findAllByMember(Member member);
 }

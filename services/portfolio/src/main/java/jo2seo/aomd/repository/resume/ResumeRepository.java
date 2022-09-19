@@ -1,27 +1,24 @@
 package jo2seo.aomd.repository.resume;
 
 import jo2seo.aomd.domain.Resume;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class ResumeRepository {
-    private final EntityManager em;
+public interface ResumeRepository extends JpaRepository<Resume, Long> {
+    
+    @Override
+    Resume save(Resume resume);
 
-    public void save(Resume resume) {
-        em.persist(resume);
-    }
+    @Override
+    @Transactional(readOnly = true)
+    Optional<Resume> findById(Long id);
 
-    public Optional<Resume> find(Long id) {
-        return Optional.of(em.find(Resume.class, id));
-    }
-
-    public List findAll() {
-        return em.createQuery("select r from Resume r").getResultList();
-    }
+    @Override
+    @Transactional(readOnly = true)
+    List<Resume> findAll();
 }
