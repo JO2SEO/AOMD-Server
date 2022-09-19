@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class PortfolioValidatorImpl implements PortfolioValidator {
 
     @Override
-    public void checkMine(String userEmail, Portfolio portfolio) {
-        if (!userEmail.equals(portfolio.getMember().getEmail())) {
+    public void checkMine(String memberEmail, Portfolio portfolio) {
+        if (!memberEmail.equals(portfolio.getMember().getEmail())) {
             throw new NotMyPortfolioException();
         }
     }

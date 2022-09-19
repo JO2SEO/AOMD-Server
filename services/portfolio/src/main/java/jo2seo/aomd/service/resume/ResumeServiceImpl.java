@@ -27,7 +27,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Long updateResume(Long resumeId, UpdateResumeRequest updateResumeRequest) {
-        Optional<Resume> resume = resumeRepository.find(resumeId);
+        Optional<Resume> resume = resumeRepository.findById(resumeId);
         if (resume.isPresent()) {
             
         }

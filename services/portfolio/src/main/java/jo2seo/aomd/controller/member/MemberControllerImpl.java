@@ -5,7 +5,7 @@ import jo2seo.aomd.api.member.dto.GetUserResponse;
 import jo2seo.aomd.api.member.dto.SignupRequest;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.file.FileService;
-import jo2seo.aomd.service.user.MemberService;
+import jo2seo.aomd.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

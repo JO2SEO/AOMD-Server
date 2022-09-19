@@ -4,7 +4,7 @@ import jo2seo.aomd.domain.Portfolio;
 
 public interface PortfolioValidator {
 
-    void checkMine(String userEmail, Portfolio portfolio);
+    void checkMine(String memberEmail, Portfolio portfolio);
 
     void checkSharing(Portfolio portfolio);
 }
