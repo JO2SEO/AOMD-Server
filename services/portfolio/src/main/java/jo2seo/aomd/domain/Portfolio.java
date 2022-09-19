@@ -1,5 +1,7 @@
 package jo2seo.aomd.domain;
 
+import jo2seo.aomd.api.portfolio.dto.PortfolioCompositeDto;
+import jo2seo.aomd.api.portfolio.dto.PortfolioTitleDto;
 import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
 import jo2seo.aomd.exception.portfolio.BlockExistException;
 import jo2seo.aomd.exception.portfolio.BlockListNotMatchingException;
@@ -44,7 +46,7 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "orderIndex")
-    private final List<PortfolioBlockOrder> portfolioBlockOrderList = new ArrayList<>();
+    private final List<PortfolioBlock> portfolioBlockList = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Resume> resumeList = new ArrayList<>();
@@ -61,6 +63,10 @@ public class Portfolio {
         this.title = title;
     }
 
+    public PortfolioTitleDto createOnlyTitleDto() {
+        return new PortfolioTitleDto(shareUrl, title);
+    }
+    
     public void updateAll(UpdatePortfolioRequest request) {
         updateTitle(request.getTitle());
         updateOrder(request.getOrder());
@@ -72,19 +78,19 @@ public class Portfolio {
     }
 
     public void updateOrder(List<String> blockList) {
-        if (blockList.size() != portfolioBlockOrderList.size()) {
+        if (blockList.size() != portfolioBlockList.size()) {
             throw new BlockListNotMatchingException();
         }
         
         blockList.forEach(
             (blockId) -> {
-                boolean anyMatch = portfolioBlockOrderList.stream()
-                        .anyMatch(portfolioBlockOrder -> portfolioBlockOrder.getBlockId().equals(blockId));
+                boolean anyMatch = portfolioBlockList.stream()
+                        .anyMatch(portfolioBlock -> portfolioBlock.getBlockId().equals(blockId));
                 if (!anyMatch) throw new BlockListNotMatchingException();
             }
         );
         
-        portfolioBlockOrderList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
+        portfolioBlockList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
     }
 
     public void updateSharing(boolean sharing) {
@@ -92,21 +98,19 @@ public class Portfolio {
     }
 
     public boolean blockExists(String blockId) {
-        return portfolioBlockOrderList.stream()
+        return portfolioBlockList.stream()
                 .anyMatch(p -> p.getBlockId().equals(blockId));
     }
 
     public void addNewBlock(String blockId) {
-        List<PortfolioBlockOrder> exists = portfolioBlockOrderList.stream()
+        List<PortfolioBlock> exists = portfolioBlockList.stream()
                 .filter(pbo -> pbo.getBlockId().equals(blockId))
                 .collect(Collectors.toList());
-        if(!exists.isEmpty()){
-            throw new BlockExistException();
-        }
-        portfolioBlockOrderList.add(new PortfolioBlockOrder(this, blockId));
+        if(!exists.isEmpty()) portfolioBlockList.add(new PortfolioBlock(this, blockId));
+        else throw new BlockExistException();
     }
 
     public void removeBlock(String blockId) {
-        portfolioBlockOrderList.removeIf(p -> p.getBlockId().equals(blockId));
+        portfolioBlockList.removeIf(p -> p.getBlockId().equals(blockId));
     }
 }
