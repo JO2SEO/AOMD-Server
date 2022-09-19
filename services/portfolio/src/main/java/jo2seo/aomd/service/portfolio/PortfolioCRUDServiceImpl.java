@@ -35,12 +35,16 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
     private final PortfolioMapper portfolioMapper;
     private final PortfolioBlockMapper portfolioBlockMapper;
     private final ResumeMapper resumeMapper;
-    
-    
+
+
+    /**
+     * 현재 유저의 모든 포트폴리오 정보를 넘겨준다. (DB에 저장된 정보들만.)
+     * 제목, 자소서, 블록 정보
+     * @return
+     */
     @Override
-    public List<PortfolioCompositeDto> findAllPortfolioByMember() {
-        String memberEmail = getCurrentEmail()
-                .orElseThrow(NoAuthenticationException::new);
+    public List<PortfolioCompositeDto> findAllPortfolioByMember(String memberEmail) {
+        
         Member member = memberRepository.findMemberByEmail(memberEmail)
                 .orElseThrow(NoMatchingPortfolioException::new);
 
@@ -62,10 +66,14 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
                 })
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 자신이 가진 포트폴리오의 제목만 받는다.
+     * @return
+     */
     @Override
-    public List<PortfolioTitleDto> findSimplePortfolioAllByMember() {
-        String memberEmail = getCurrentEmail()
-                .orElseThrow(NoAuthenticationException::new);
+    public List<PortfolioTitleDto> findSimplePortfolioAllByMember(String memberEmail) {
+        
         Member member = memberRepository.findMemberByEmail(memberEmail)
                 .orElseThrow(NoMatchingPortfolioException::new);
         

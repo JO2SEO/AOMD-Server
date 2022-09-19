@@ -10,10 +10,10 @@ import java.util.List;
 public interface PortfolioReadService {
 
     @Transactional(readOnly = true)
-    List<PortfolioCompositeDto> findAllPortfolioByMember();
+    List<PortfolioCompositeDto> findAllPortfolioByMember(String memberEmail);
 
     @Transactional(readOnly = true)
-    List<PortfolioTitleDto> findSimplePortfolioAllByMember();
+    List<PortfolioTitleDto> findSimplePortfolioAllByMember(String memberEmail);
 
     @Transactional(readOnly = true)
     Portfolio findByUrl(String shareUrl);

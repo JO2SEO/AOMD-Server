@@ -1,12 +1,18 @@
 package jo2seo.aomd.controller.portfolio;
 
 import jo2seo.aomd.api.portfolio.PortfolioController;
-import jo2seo.aomd.api.portfolio.dto.*;
+import jo2seo.aomd.api.portfolio.dto.CreatePortfolioBlockRequest;
+import jo2seo.aomd.api.portfolio.dto.CreatePortfolioRequest;
+import jo2seo.aomd.api.portfolio.dto.DeletePortfolioBlockRequest;
+import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
+import jo2seo.aomd.domain.Block.dto.AwardDto;
+import jo2seo.aomd.domain.Block.dto.BlockCompositeDto;
+import jo2seo.aomd.domain.Block.dto.EducationDto;
+import jo2seo.aomd.domain.Block.dto.LicenseDto;
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.exception.Member.NoAuthenticationException;
 import jo2seo.aomd.service.portfolio.PortfolioBlockchainService;
 import jo2seo.aomd.service.portfolio.PortfolioCRUDService;
-import jo2seo.aomd.service.resume.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +32,33 @@ public class PortfolioControllerImpl implements PortfolioController {
 
     private final PortfolioBlockchainService portfolioBlockchainService;
 
-    private final ResumeService resumeService;
+    public ResponseEntity getPortfolioBlockByMember() {
+        String memberEmail = getCurrentEmail()
+                .orElseThrow(NoAuthenticationException::new);
+        List<AwardDto> awardList = 
+                portfolioBlockchainService.findAwardListByMemberId(memberEmail);
+        List<EducationDto> educationList = 
+                portfolioBlockchainService.findEducationListByMemberId(memberEmail);
+        List<LicenseDto> licenseList = 
+                portfolioBlockchainService.findLicenseListByMemberId(memberEmail);
 
+        BlockCompositeDto blockCompositeDto = new BlockCompositeDto(awardList, educationList, licenseList);
+
+        return new ResponseEntity(blockCompositeDto, OK);
+    }
+    
     @Override
     public ResponseEntity findAllMyPortfolioByMember() {
-        return new ResponseEntity(portfolioService.findAllPortfolioByMember(), OK);
+        String memberEmail = getCurrentEmail()
+                .orElseThrow(NoAuthenticationException::new);
+        return new ResponseEntity(portfolioService.findAllPortfolioByMember(memberEmail), OK);
     }
 
     @Override
     public ResponseEntity getSimplePortfolioAllByMember() {
-        List<PortfolioTitleDto> allPortfolio = portfolioService.findSimplePortfolioAllByMember();
-        return new ResponseEntity(allPortfolio, OK);
+        String memberEmail = getCurrentEmail()
+                .orElseThrow(NoAuthenticationException::new);
+        return new ResponseEntity(portfolioService.findSimplePortfolioAllByMember(memberEmail), OK);
     }
 
     @Override
