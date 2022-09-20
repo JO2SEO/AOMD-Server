@@ -4,9 +4,9 @@ import jo2seo.aomd.exception.BasicException;
 
 import static jo2seo.aomd.exception.ExceptionType.PORTFOLIO_BLOCK_NOT_EXIST;
 
-public class BlockExistException extends BasicException {
+public class BlockNotExistException extends BasicException {
 
-    public BlockExistException() {
+    public BlockNotExistException() {
         super(PORTFOLIO_BLOCK_NOT_EXIST.getHttpStatus(), PORTFOLIO_BLOCK_NOT_EXIST.getDetail());
     }
 }

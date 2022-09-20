@@ -1,5 +1,6 @@
 package jo2seo.aomd.domain;
 
+import jo2seo.aomd.api.resume.dto.UpdateResumeRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,5 +29,11 @@ public class Resume {
         this.portfolio = portfolio;
         this.question = question;
         this.content = content;
+    }
+
+    public Resume(Portfolio portfolio, UpdateResumeRequest newResume) {
+        this.portfolio = portfolio;
+        this.question = newResume.getQuestion();
+        this.content = newResume.getContent();
     }
 }

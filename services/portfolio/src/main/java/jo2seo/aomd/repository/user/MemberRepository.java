@@ -13,9 +13,13 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Transactional(readOnly = true)
-    Optional<Member> findMemberByEmail(String email);
+    Optional<Member> findByEmail(String email);
+
+    @Transactional(readOnly = true)
+    Optional<Member> findByNickname(String nickname);
 
     @Transactional(readOnly = true)
     List<Member> findAll();
+    
     
 }

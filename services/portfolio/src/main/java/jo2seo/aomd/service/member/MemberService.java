@@ -8,10 +8,12 @@ import java.util.List;
 public interface MemberService {
     
     List<Member> findAllMembers();
-    
-    void signup(SignupRequest signupRequest);
 
-    Member getMyMember();
+    Member findByEmail(String email);
+    
+    Member signup(SignupRequest signupRequest);
+
+    Member getCurrentMember();
 
     void updateProfileImg(String savedProfileImgUrl);
 }

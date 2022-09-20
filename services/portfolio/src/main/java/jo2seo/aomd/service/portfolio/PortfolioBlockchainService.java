@@ -1,14 +1,15 @@
 package jo2seo.aomd.service.portfolio;
 
+import jo2seo.aomd.api.portfolio.block.dto.AwardDto;
+import jo2seo.aomd.api.portfolio.block.dto.BlockCompositeDto;
+import jo2seo.aomd.api.portfolio.block.dto.EducationDto;
+import jo2seo.aomd.api.portfolio.block.dto.LicenseDto;
 import jo2seo.aomd.blockchain.BlockchainGateway;
 import jo2seo.aomd.blockchain.BlockchainUrl;
 import jo2seo.aomd.domain.Block.Award;
 import jo2seo.aomd.domain.Block.Block;
 import jo2seo.aomd.domain.Block.Education;
 import jo2seo.aomd.domain.Block.License;
-import jo2seo.aomd.domain.Block.dto.AwardDto;
-import jo2seo.aomd.domain.Block.dto.EducationDto;
-import jo2seo.aomd.domain.Block.dto.LicenseDto;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.exception.Member.MemberNotFoundException;
 import jo2seo.aomd.repository.user.MemberRepository;
@@ -29,35 +30,18 @@ public class PortfolioBlockchainService {
     private final BlockchainUrl blockChainUrl;
     private final MemberRepository memberRepository;
 
-    
-    public List<AwardDto> findAwardListByMemberId(String memberEmail) {
-        return (List<AwardDto>) findBlockList(
-                memberEmail,
-                blockChainUrl.getAwardList(),
-                new ArrayList<>(),
-                Award.class);
-    }
-
-    public List<EducationDto> findEducationListByMemberId(String memberEmail) {
-        return (List<EducationDto>) findBlockList(
-                memberEmail,
-                blockChainUrl.getEducationList(),
-                new ArrayList<>(),
-                Education.class);
-    }
-
-    public List<LicenseDto> findLicenseListByMemberId(String memberEmail) {
-        return (List<LicenseDto>) findBlockList(
-                memberEmail, 
-                blockChainUrl.getLicenseList(), 
-                new ArrayList<>(), 
-                License.class);
-    }
-
-    private <B extends Block> List<?> findBlockList(String memberEmail, String url, List<String> pathVariables, Class<B> blockClass) {
-        Member member = memberRepository.findMemberByEmail(memberEmail)
+    public BlockCompositeDto findBlockCompositeDto(String memberEmail) {
+        Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(MemberNotFoundException::new);
 
+        List<AwardDto> awardDtoList = findAwardListByMember(member);
+        List<EducationDto> educationDtoList = findEducationListByMember(member);
+        List<LicenseDto> licenseDtoList = findLicenseListByMember(member);
+        
+        return new BlockCompositeDto(awardDtoList, educationDtoList, licenseDtoList);
+    }
+
+    private <B extends Block> List<?> findBlockList(Member member, String url, List<String> pathVariables, Class<B> blockClass) {
         return blockChainGateway.getBlockList(
                 blockChainGateway.createQueryUrl(
                         url, 
@@ -65,5 +49,29 @@ public class PortfolioBlockchainService {
                         Map.of("memberId", member.getId().toString())),
                 blockClass
         );
+    }
+    
+    public List<AwardDto> findAwardListByMember(Member member) {
+        return (List<AwardDto>) findBlockList(
+                member,
+                blockChainUrl.getAwardList(),
+                new ArrayList<>(),
+                Award.class);
+    }
+    
+    public List<EducationDto> findEducationListByMember(Member member) {
+        return (List<EducationDto>) findBlockList(
+                member,
+                blockChainUrl.getEducationList(),
+                new ArrayList<>(),
+                Education.class);
+    }
+
+    public List<LicenseDto> findLicenseListByMember(Member member) {
+        return (List<LicenseDto>) findBlockList(
+                member,
+                blockChainUrl.getLicenseList(),
+                new ArrayList<>(),
+                License.class);
     }
 }

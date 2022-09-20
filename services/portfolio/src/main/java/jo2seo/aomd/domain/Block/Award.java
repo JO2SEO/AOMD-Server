@@ -1,9 +1,11 @@
 package jo2seo.aomd.domain.Block;
 
-import jo2seo.aomd.domain.Block.dto.AwardDto;
+import jo2seo.aomd.api.portfolio.block.dto.AwardDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static jo2seo.aomd.utils.TimeUtils.milliToDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -20,7 +22,15 @@ public class Award implements Block {
 
     @Override
     public AwardDto toDto() {
-        return new AwardDto(this);
+        return new AwardDto(
+                this.id,
+                this.title,
+                this.ownerId,
+                this.publisher,
+                milliToDateTime(this.publishedAt),
+                milliToDateTime(this.createdAt),
+                this.rank
+        );
     }
 
     @Override

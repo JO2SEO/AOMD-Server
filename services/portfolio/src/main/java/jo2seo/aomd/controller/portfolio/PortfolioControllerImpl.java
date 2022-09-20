@@ -1,24 +1,22 @@
 package jo2seo.aomd.controller.portfolio;
 
 import jo2seo.aomd.api.portfolio.PortfolioController;
-import jo2seo.aomd.api.portfolio.dto.CreatePortfolioBlockRequest;
-import jo2seo.aomd.api.portfolio.dto.CreatePortfolioRequest;
-import jo2seo.aomd.api.portfolio.dto.DeletePortfolioBlockRequest;
-import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
-import jo2seo.aomd.domain.Block.dto.AwardDto;
-import jo2seo.aomd.domain.Block.dto.BlockCompositeDto;
-import jo2seo.aomd.domain.Block.dto.EducationDto;
-import jo2seo.aomd.domain.Block.dto.LicenseDto;
+import jo2seo.aomd.api.portfolio.block.dto.BlockCompositeDto;
+import jo2seo.aomd.api.portfolio.dto.*;
+import jo2seo.aomd.api.resume.dto.ResumeDto;
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.exception.Member.NoAuthenticationException;
 import jo2seo.aomd.service.portfolio.PortfolioBlockchainService;
 import jo2seo.aomd.service.portfolio.PortfolioCRUDService;
+import jo2seo.aomd.service.portfolio.mapper.PortfolioMapper;
+import jo2seo.aomd.service.resume.mapper.ResumeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jo2seo.aomd.security.SecurityUtil.getCurrentEmail;
 import static org.springframework.http.HttpStatus.*;
@@ -32,26 +30,53 @@ public class PortfolioControllerImpl implements PortfolioController {
 
     private final PortfolioBlockchainService portfolioBlockchainService;
 
-    public ResponseEntity getPortfolioBlockByMember() {
+    private final PortfolioMapper portfolioMapper;
+    
+    private final ResumeMapper resumeMapper;
+
+    
+    public ResponseEntity getBlockCompositeDtoByMember() {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
-        List<AwardDto> awardList = 
-                portfolioBlockchainService.findAwardListByMemberId(memberEmail);
-        List<EducationDto> educationList = 
-                portfolioBlockchainService.findEducationListByMemberId(memberEmail);
-        List<LicenseDto> licenseList = 
-                portfolioBlockchainService.findLicenseListByMemberId(memberEmail);
 
-        BlockCompositeDto blockCompositeDto = new BlockCompositeDto(awardList, educationList, licenseList);
+        BlockCompositeDto blockCompositeDto = 
+                portfolioBlockchainService.findBlockCompositeDto(memberEmail);
 
         return new ResponseEntity(blockCompositeDto, OK);
     }
-    
+
+    /**
+     * 현재 유저의 모든 포트폴리오 정보를 넘겨준다.
+     * 제목, 자소서, 포폴이 사용하는 블록들의 정보
+     * @return
+     */
     @Override
     public ResponseEntity findAllMyPortfolioByMember() {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
-        return new ResponseEntity(portfolioService.findAllPortfolioByMember(memberEmail), OK);
+
+        BlockCompositeDto blockCompositeDto = 
+                portfolioBlockchainService.findBlockCompositeDto(memberEmail);
+
+        List<Portfolio> portfolioList = 
+                portfolioService.findAllPortfolioByMember(memberEmail);
+
+        List<PortfolioCompositeDto> portfolioCompositeDtoList = portfolioList.stream()
+                .map(p -> {
+                    PortfolioDto portfolioDto = portfolioMapper.entityToDTO(p);
+                    BlockCompositeDto usingBlockListDto = p.getUsingBlockList(blockCompositeDto);
+                    List<ResumeDto> resumeList =
+                            p.getResumeList().stream()
+                                    .map(r -> {
+                                        ResumeDto resumeDto = resumeMapper.entityToDTO(r);
+                                        resumeDto.setPortfolioId(portfolioDto.getPortfolioId());
+                                        return resumeDto;
+                                    }).collect(Collectors.toList());
+                    return new PortfolioCompositeDto(portfolioDto, usingBlockListDto, resumeList);
+                }).collect(Collectors.toList());
+
+
+        return new ResponseEntity(portfolioCompositeDtoList, OK);
     }
 
     @Override
@@ -78,7 +103,9 @@ public class PortfolioControllerImpl implements PortfolioController {
     @Override
     public ResponseEntity createPortfolio(
             CreatePortfolioRequest createPortfolioRequest) {
-        Portfolio portfolio = portfolioService.createNewPortfolio(createPortfolioRequest);
+        String memberEmail = getCurrentEmail()
+                .orElseThrow(NoAuthenticationException::new);
+        Portfolio portfolio = portfolioService.createNewPortfolio(memberEmail, createPortfolioRequest);
         return new ResponseEntity(portfolio, CREATED);
     }
 
@@ -107,4 +134,8 @@ public class PortfolioControllerImpl implements PortfolioController {
         portfolioService.deleteBlock(shareUrl, deletePortfolioBlockRequest.getBlockId());
         return new ResponseEntity(NO_CONTENT);
     }
+
+//    private BlockCompositeDto createBlockComposite(String memberEmail) {
+//        
+//    }
 }

@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static jo2seo.aomd.security.SecurityUtil.getCurrentEmail;
@@ -32,40 +31,16 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
     private final PortfolioRepository portfolioRepository;
     private final MemberRepository memberRepository;
     private final PortfolioValidator portfolioValidator;
-    private final PortfolioMapper portfolioMapper;
-    private final PortfolioBlockMapper portfolioBlockMapper;
-    private final ResumeMapper resumeMapper;
 
-
-    /**
-     * 현재 유저의 모든 포트폴리오 정보를 넘겨준다. (DB에 저장된 정보들만.)
-     * 제목, 자소서, 블록 정보
-     * @return
-     */
     @Override
-    public List<PortfolioCompositeDto> findAllPortfolioByMember(String memberEmail) {
-        
-        Member member = memberRepository.findMemberByEmail(memberEmail)
+    public List<Portfolio> findAllPortfolioByMember(String memberEmail) {
+
+        Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(NoMatchingPortfolioException::new);
 
-        return portfolioRepository.findAllByMember(member).stream()
-                .map(p -> {
-                    PortfolioDto portfolioDto = portfolioMapper.entityToDTO(p);
-                    List<PortfolioBlockDto> portfolioBlockList = 
-                            p.getPortfolioBlockList().stream()
-                                    .map(portfolioBlockMapper::entityToDTO)
-                                    .collect(Collectors.toList());
-                    List<ResumeDto> resumeList = 
-                            p.getResumeList().stream()
-                                    .map(r -> {
-                                        ResumeDto resumeDto = resumeMapper.entityToDTO(r);
-                                        resumeDto.setPortfolioId(portfolioDto.getPortfolioId());
-                                        return resumeDto;
-                                    }).collect(Collectors.toList());
-                    return new PortfolioCompositeDto(portfolioDto, portfolioBlockList, resumeList);
-                })
-                .collect(Collectors.toList());
+        return portfolioRepository.findAllByMember(member);
     }
+    
 
     /**
      * 자신이 가진 포트폴리오의 제목만 받는다.
@@ -74,7 +49,7 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
     @Override
     public List<PortfolioTitleDto> findSimplePortfolioAllByMember(String memberEmail) {
         
-        Member member = memberRepository.findMemberByEmail(memberEmail)
+        Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(NoMatchingPortfolioException::new);
         
         return portfolioRepository.findAllByMember(member).stream()
@@ -114,10 +89,8 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
     
     @Override
     @Transactional
-    public Portfolio createNewPortfolio(CreatePortfolioRequest createPortfolioRequest) {
-        String memberEmail = getCurrentEmail()
-                .orElseThrow(NoAuthenticationException::new);
-        Member member = memberRepository.findMemberByEmail(memberEmail)
+    public Portfolio createNewPortfolio(String memberEmail, CreatePortfolioRequest createPortfolioRequest) {
+        Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(MemberNotFoundException::new);
 
         String title = createPortfolioRequest.getTitle();
@@ -152,7 +125,7 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
 
-        Member member = memberRepository.findMemberByEmail(memberEmail)
+        Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(MemberNotFoundException::new);
 
         Portfolio portfolio = portfolioRepository.findByMemberAndShareUrl(member, shareUrl)

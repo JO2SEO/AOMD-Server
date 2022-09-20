@@ -1,9 +1,14 @@
 package jo2seo.aomd.domain;
 
-import jo2seo.aomd.api.portfolio.dto.PortfolioCompositeDto;
+import jo2seo.aomd.api.portfolio.block.dto.AwardDto;
+import jo2seo.aomd.api.portfolio.block.dto.BlockCompositeDto;
+import jo2seo.aomd.api.portfolio.block.dto.EducationDto;
+import jo2seo.aomd.api.portfolio.block.dto.LicenseDto;
 import jo2seo.aomd.api.portfolio.dto.PortfolioTitleDto;
 import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
-import jo2seo.aomd.exception.portfolio.BlockExistException;
+import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioBlockRequest;
+import jo2seo.aomd.api.resume.dto.UpdateResumeRequest;
+import jo2seo.aomd.exception.portfolio.BlockNotExistException;
 import jo2seo.aomd.exception.portfolio.BlockListNotMatchingException;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,10 +51,10 @@ public class Portfolio {
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "orderIndex")
-    private final List<PortfolioBlock> portfolioBlockList = new ArrayList<>();
+    private List<PortfolioBlock> portfolioBlockList = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<Resume> resumeList = new ArrayList<>();
+    private List<Resume> resumeList = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -69,14 +74,57 @@ public class Portfolio {
     
     public void updateAll(UpdatePortfolioRequest request) {
         updateTitle(request.getTitle());
-        updateOrder(request.getOrder());
         updateSharing(request.getSharing());
+        updatePortfolioBlockList(request.getPortfolioBlockList());
+        updateResumeList(request.getResumeList() != null ? request.getResumeList() : new ArrayList<>());
     }
     
     public void updateTitle(String title) {
         this.title = title;
     }
 
+    public void updateSharing(boolean sharing) {
+        this.sharing = sharing;
+    }
+    
+    public void updatePortfolioBlockList(List<UpdatePortfolioBlockRequest> newPortfolioBlockList) {
+        this.portfolioBlockList.clear();
+        this.portfolioBlockList = newPortfolioBlockList.stream()
+                .map(pb -> new PortfolioBlock(this, pb)
+                ).collect(Collectors.toList());
+    }
+
+    public void updateResumeList(List<UpdateResumeRequest> newResumeList) {
+        this.resumeList.clear();
+        this.resumeList = newResumeList.stream()
+                .map(nr -> new Resume(this, nr))
+                .collect(Collectors.toList());
+    }
+
+    public BlockCompositeDto getUsingBlockList(BlockCompositeDto blockCompositeDto) {
+        List<AwardDto> containedAwardBlockList =
+                blockCompositeDto.getAwardDtoList().stream()
+                        .filter(b -> portfolioBlockList.stream()
+                                .anyMatch(pb -> pb.getBlockId().equals(b.getId()))
+                        ).collect(Collectors.toList());
+
+        List<EducationDto> containedEducationBlockList =
+                blockCompositeDto.getEducationDtoList().stream()
+                        .filter(b -> portfolioBlockList.stream()
+                                .anyMatch(pb -> pb.getBlockId().equals(b.getId()))
+                        ).collect(Collectors.toList());
+
+        List<LicenseDto> containedLicenseBlockList =
+                blockCompositeDto.getLicenseDtoList().stream()
+                        .filter(b -> portfolioBlockList.stream()
+                                .anyMatch(pb -> pb.getBlockId().equals(b.getId()))
+                        ).collect(Collectors.toList());
+
+        return new BlockCompositeDto(containedAwardBlockList, containedEducationBlockList, containedLicenseBlockList);
+    }
+    
+    
+    @Deprecated
     public void updateOrder(List<String> blockList) {
         if (blockList.size() != portfolioBlockList.size()) {
             throw new BlockListNotMatchingException();
@@ -93,10 +141,6 @@ public class Portfolio {
         portfolioBlockList.sort(Comparator.comparingInt(o -> blockList.indexOf(o.getBlockId())));
     }
 
-    public void updateSharing(boolean sharing) {
-        this.sharing = sharing;
-    }
-
     public boolean blockExists(String blockId) {
         return portfolioBlockList.stream()
                 .anyMatch(p -> p.getBlockId().equals(blockId));
@@ -107,7 +151,7 @@ public class Portfolio {
                 .filter(pbo -> pbo.getBlockId().equals(blockId))
                 .collect(Collectors.toList());
         if(!exists.isEmpty()) portfolioBlockList.add(new PortfolioBlock(this, blockId));
-        else throw new BlockExistException();
+        else throw new BlockNotExistException();
     }
 
     public void removeBlock(String blockId) {

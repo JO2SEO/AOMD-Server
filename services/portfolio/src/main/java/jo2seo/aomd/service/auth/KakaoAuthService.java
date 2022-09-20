@@ -45,7 +45,7 @@ public class KakaoAuthService implements AuthService {
         String nickname = (String) profile.get("nickname");
         String imgUrl = fileService.downloadKakaoProfileImage(kakaoImgUrl);
 
-        if (memberRepository.findMemberByEmail(email).isEmpty()) {
+        if (memberRepository.findByEmail(email).isEmpty()) {
             memberRepository.save(new Member(email, passwordEncoder.encode(password), imgUrl, nickname, UserRole.USER));
         }
 

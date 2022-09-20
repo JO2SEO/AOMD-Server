@@ -12,6 +12,8 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1")
 public interface PortfolioController {
 
+    @GetMapping("/portfolio/block")
+    ResponseEntity getBlockCompositeDtoByMember();
     
     @GetMapping("/portfolio")
     ResponseEntity findAllMyPortfolioByMember();

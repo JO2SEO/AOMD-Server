@@ -49,7 +49,7 @@ public class MemberControllerImpl implements MemberController {
      */
     @Override
     public ResponseEntity getMember() {
-        Member member = memberService.getMyMember();
+        Member member = memberService.getCurrentMember();
         return new ResponseEntity(new GetUserResponse(member.getId(), member.getNickname()), OK);
     }
 }

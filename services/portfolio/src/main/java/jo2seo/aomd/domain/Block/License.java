@@ -1,9 +1,11 @@
 package jo2seo.aomd.domain.Block;
 
-import jo2seo.aomd.domain.Block.dto.LicenseDto;
+import jo2seo.aomd.api.portfolio.block.dto.LicenseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static jo2seo.aomd.utils.TimeUtils.milliToDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -22,9 +24,19 @@ public class License implements Block {
 
     @Override
     public LicenseDto toDto() {
-        return new LicenseDto(this);
+        return new LicenseDto(
+                this.id,
+                this.title,
+                this.ownerId,
+                this.publisher,
+                milliToDateTime(this.publishedAt),
+                milliToDateTime(this.createdAt),
+                this.description,
+                milliToDateTime(this.expireDate),
+                this.qualificationNumber
+        );
     }
-
+    
     @Override
     public String toString() {
         return "License{" +

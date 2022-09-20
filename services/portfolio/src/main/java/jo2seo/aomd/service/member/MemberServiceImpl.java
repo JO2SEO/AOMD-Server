@@ -4,6 +4,7 @@ import jo2seo.aomd.api.member.dto.SignupRequest;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.domain.UserRole;
 import jo2seo.aomd.exception.AlreadyInMemberException;
+import jo2seo.aomd.exception.Member.MemberNotFoundException;
 import jo2seo.aomd.repository.user.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static jo2seo.aomd.security.SecurityUtil.*;
 
@@ -28,11 +30,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signup(SignupRequest signupRequest) {
-        if (memberRepository.findMemberByEmail(signupRequest.getEmail()).isPresent()) {
+    @Transactional(readOnly = true)
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
+    public Member signup(SignupRequest signupRequest) {
+        if (memberRepository.findByEmail(signupRequest.getEmail()).isPresent() ||
+                memberRepository.findByNickname(signupRequest.getNickname()).isPresent()) {
             throw new AlreadyInMemberException();
         }
-        memberRepository.save(new Member(
+        return memberRepository.save(new Member(
                 signupRequest.getEmail(),
                 passwordEncoder.encode(signupRequest.getPassword()),
                 signupRequest.getProfileImgUrl(),
@@ -43,16 +53,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public Member getMyMember() {
+    public Member getCurrentMember() {
         Member member = getCurrentEmail()
-                .flatMap(memberRepository::findMemberByEmail)
-                .orElseThrow(() -> new RuntimeException("Cannot find member by email"));
+                .flatMap(memberRepository::findByEmail)
+                .orElseThrow(MemberNotFoundException::new);
         return member;
     }
 
     @Override
     public void updateProfileImg(String savedProfileImgUrl) {
-        Member member = getMyMember();
+        Member member = getCurrentMember();
         member.updateProfileImgUrl(savedProfileImgUrl);
     }
 }

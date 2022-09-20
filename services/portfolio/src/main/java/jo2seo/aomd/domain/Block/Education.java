@@ -1,9 +1,11 @@
 package jo2seo.aomd.domain.Block;
 
-import jo2seo.aomd.domain.Block.dto.EducationDto;
+import jo2seo.aomd.api.portfolio.block.dto.EducationDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static jo2seo.aomd.utils.TimeUtils.milliToDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -21,7 +23,16 @@ public class Education implements Block {
 
     @Override
     public EducationDto toDto() {
-        return new EducationDto(this);
+        return new EducationDto(
+                this.id,
+                this.title,
+                this.ownerId,
+                this.publisher,
+                milliToDateTime(this.publishedAt),
+                milliToDateTime(this.createdAt),
+                this.state,
+                this.departmentInfo
+        );
     }
 
     @Override
