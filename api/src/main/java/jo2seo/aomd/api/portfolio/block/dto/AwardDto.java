@@ -1,17 +1,16 @@
-package jo2seo.aomd.domain.Block.dto;
+package jo2seo.aomd.api.portfolio.block.dto;
 
-import jo2seo.aomd.domain.Block.Award;
-import jo2seo.aomd.domain.Block.BlockType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static jo2seo.aomd.domain.Block.BlockType.AWARD;
-import static jo2seo.aomd.utils.TimeUtils.milliToDateTime;
+import static jo2seo.aomd.api.portfolio.block.dto.BlockType.AWARD;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AwardDto implements BlockDto {
 
     private final static BlockType type = AWARD;
@@ -23,15 +22,6 @@ public class AwardDto implements BlockDto {
     private LocalDateTime createdAt;
     private String rank;
 
-    public AwardDto(Award award) {
-        this.id = award.getId();
-        this.title = award.getTitle();
-        this.ownerId = award.getOwnerId();
-        this.publisher = award.getPublisher();
-        this.publishedAt = milliToDateTime(award.getPublishedAt());
-        this.createdAt = milliToDateTime(award.getCreatedAt());
-        this.rank = award.getRank();
-    }
 
     @Override
     public String toString() {

@@ -1,4 +1,4 @@
-package jo2seo.aomd.domain.Block.dto;
+package jo2seo.aomd.api.portfolio.block.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

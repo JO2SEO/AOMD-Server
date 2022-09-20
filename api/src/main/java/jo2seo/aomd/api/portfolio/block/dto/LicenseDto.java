@@ -1,15 +1,16 @@
-package jo2seo.aomd.domain.Block.dto;
+package jo2seo.aomd.api.portfolio.block.dto;
 
-import jo2seo.aomd.domain.Block.BlockType;
-import jo2seo.aomd.domain.Block.License;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static jo2seo.aomd.domain.Block.BlockType.LICENSE;
-import static jo2seo.aomd.utils.TimeUtils.milliToDateTime;
+import static jo2seo.aomd.api.portfolio.block.dto.BlockType.LICENSE;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LicenseDto implements BlockDto {
 
     private final static BlockType type = LICENSE;
@@ -23,17 +24,6 @@ public class LicenseDto implements BlockDto {
     private LocalDateTime expireDate;
     private String qualificationNumber;
     
-    public LicenseDto(License license) {
-        this.id = license.getId();
-        this.title = license.getTitle();
-        this.ownerId = license.getOwnerId();
-        this.publisher = license.getPublisher();
-        this.publishedAt = milliToDateTime(license.getPublishedAt());
-        this.createdAt = milliToDateTime(license.getCreatedAt());
-        this.description = license.getDescription();
-        this.expireDate = milliToDateTime(license.getExpireDate());
-        this.qualificationNumber = license.getQualificationNumber();
-    }
 
     @Override
     public String toString() {
