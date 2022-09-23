@@ -1,4 +1,0 @@
-rootProject.name = 'aomd'
-include 'api'
-include 'services:portfolio'
-
