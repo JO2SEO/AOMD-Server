@@ -1,0 +1,48 @@
+version: "2.4"
+
+services:
+#  ===== nginx Web Server =====
+  nginx:
+    image: nginx:1.21.1
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      aomd_server:
+        condition: service_healthy
+  
+  
+# ====== AOMD Spring WAS ======
+  aomd_server:
+    image: aomd-server/portfolio:latest
+    volumes:
+      - ./services/portfolio/build/libs/aomd-server.jar:/HOME/spring/app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aomd-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 1234
+    healthcheck:
+      test: "curl --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      mysql:
+        condition: service_healthy
+  
+# ===== DB =====
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: aomd-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+    command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+    healthcheck:
+      test: "/usr/bin/mysql -uuser -p1234 --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 3s
+      retries: 10
