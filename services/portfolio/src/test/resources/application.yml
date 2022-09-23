@@ -6,6 +6,14 @@ spring:
     url: jdbc:h2:mem:testdb;MODE=MySQL;
     username: sa
     password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    logging.level:
+      org.hibernate.SQL: debug
+    properties:
+      hibernate:
+        show_sql: true
 
 jwt:
   secret: testsecrettestsecrettestsecrettestsecrettestsecrettestsecret
