@@ -37,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public Member signup(SignupRequest signupRequest) {
         if (memberRepository.findByEmail(signupRequest.getEmail()).isPresent() ||
                 memberRepository.findByNickname(signupRequest.getNickname()).isPresent()) {
@@ -61,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void updateProfileImg(String savedProfileImgUrl) {
         Member member = getCurrentMember();
         member.updateProfileImgUrl(savedProfileImgUrl);

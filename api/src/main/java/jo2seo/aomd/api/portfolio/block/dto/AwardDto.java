@@ -16,7 +16,7 @@ public class AwardDto implements BlockDto {
     private final static BlockType type = AWARD;
     private String id;
     private String title;
-    private Long ownerId;
+    private String ownerEmail;
     private String publisher;
     private LocalDateTime publishedAt;
     private LocalDateTime createdAt;
@@ -28,7 +28,7 @@ public class AwardDto implements BlockDto {
         return "AwardDto{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", ownerId=" + ownerId +
+                ", ownerId=" + ownerEmail +
                 ", publisher='" + publisher + '\'' +
                 ", publishedAt=" + publishedAt +
                 ", createdAt=" + createdAt +

@@ -75,8 +75,10 @@ public class Portfolio {
     public void updateAll(UpdatePortfolioRequest request) {
         updateTitle(request.getTitle());
         updateSharing(request.getSharing());
-        updatePortfolioBlockList(request.getPortfolioBlockList());
-        updateResumeList(request.getResumeList() != null ? request.getResumeList() : new ArrayList<>());
+        updatePortfolioBlockList(request.getPortfolioBlockList() != null ? 
+                request.getPortfolioBlockList() : new ArrayList<>());
+        updateResumeList(request.getResumeList() != null ? 
+                request.getResumeList() : new ArrayList<>());
     }
     
     public void updateTitle(String title) {
@@ -89,16 +91,14 @@ public class Portfolio {
     
     public void updatePortfolioBlockList(List<UpdatePortfolioBlockRequest> newPortfolioBlockList) {
         this.portfolioBlockList.clear();
-        this.portfolioBlockList = newPortfolioBlockList.stream()
-                .map(pb -> new PortfolioBlock(this, pb)
-                ).collect(Collectors.toList());
+        newPortfolioBlockList.forEach(pb -> 
+                portfolioBlockList.add(new PortfolioBlock(this, pb)));
     }
 
     public void updateResumeList(List<UpdateResumeRequest> newResumeList) {
         this.resumeList.clear();
-        this.resumeList = newResumeList.stream()
-                .map(nr -> new Resume(this, nr))
-                .collect(Collectors.toList());
+        newResumeList.forEach(nr -> 
+                resumeList.add(new Resume(this, nr)));
     }
 
     public BlockCompositeDto getUsingBlockList(BlockCompositeDto blockCompositeDto) {

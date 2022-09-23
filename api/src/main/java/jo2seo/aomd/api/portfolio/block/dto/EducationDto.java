@@ -16,19 +16,19 @@ public class EducationDto implements BlockDto {
     private final static BlockType type = EDUCATION;
     private String id;
     private String title;
-    private Long ownerId;
+    private String ownerEmail;
     private String publisher;
     private LocalDateTime publishedAt;
     private LocalDateTime createdAt;
     private String state;
-    private Long departmentInfo;
+    private String departmentInfo;
 
     @Override
     public String toString() {
         return "EducationDto{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", ownerId=" + ownerId +
+                ", ownerId=" + ownerEmail +
                 ", publisher='" + publisher + '\'' +
                 ", publishedAt=" + publishedAt +
                 ", createdAt=" + createdAt +

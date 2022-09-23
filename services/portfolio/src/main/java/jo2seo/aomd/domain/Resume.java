@@ -1,5 +1,6 @@
 package jo2seo.aomd.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jo2seo.aomd.api.resume.dto.UpdateResumeRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Resume {
     @Column(name = "resume_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;

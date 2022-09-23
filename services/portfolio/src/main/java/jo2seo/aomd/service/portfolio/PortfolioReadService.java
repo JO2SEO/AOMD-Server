@@ -11,9 +11,6 @@ public interface PortfolioReadService {
     @Transactional(readOnly = true)
     List<Portfolio> findAllPortfolioByMember(String memberEmail);
 
-//    @Transactional(readOnly = true)
-//    List<PortfolioCompositeDto> findAllPortfolioByMemberToDto(String memberEmail);
-
     @Transactional(readOnly = true)
     List<PortfolioTitleDto> findSimplePortfolioAllByMember(String memberEmail);
 

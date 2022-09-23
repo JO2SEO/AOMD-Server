@@ -45,8 +45,8 @@ public class PortfolioBlockchainService {
         return blockChainGateway.getBlockList(
                 blockChainGateway.createQueryUrl(
                         url, 
-                        pathVariables, 
-                        Map.of("memberId", member.getId().toString())),
+                        pathVariables,
+                        Map.of("memberId", member.getEmail())),
                 blockClass
         );
     }

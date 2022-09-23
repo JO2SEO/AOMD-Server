@@ -5,5 +5,5 @@ import jo2seo.aomd.domain.Portfolio;
 
 public interface PortfolioUpdateService {
     
-    Portfolio update(String shareUrl, UpdatePortfolioRequest updatePortfolioRequest);
+    Portfolio update(String memberEmail, String shareUrl, UpdatePortfolioRequest updatePortfolioRequest);
 }

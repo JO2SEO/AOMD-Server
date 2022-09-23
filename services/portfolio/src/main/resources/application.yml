@@ -13,10 +13,13 @@ spring:
       ddl-auto: create-drop
     logging.level:
       org.hibernate.SQL: debug
+#    defer-datasource-initialization: false
+  sql:
+    init:
+      mode: always
   profiles:
     group:
-      h2: "h2"
-      docker: "docker"
+      local: "local"
       dev: "dev"
       prod: "prod"
 
@@ -31,19 +34,14 @@ management.endpoints.web.exposure.include: "*"
 spring:
   config:
     activate:
-      on-profile: "docker"
+      on-profile: "dev"
     import: mysql-datasource.yml
-  datasource:
-    
   jpa:
     hibernate:
       ddl-auto: create
----
-spring:
-  config:
-    activate:
-      on-profile: "dev"
-    import: mysql-datasource.yml
+    logging.level:
+      org.hibernate.SQL: debug
+    
 ---
 spring:
   config:

@@ -18,7 +18,7 @@ public class UpdatePortfolioRequest {
     @NotNull
     private Boolean sharing;
 
-    @NotNull
+    @Nullable
     private List<UpdatePortfolioBlockRequest> portfolioBlockList;
 
     @Nullable

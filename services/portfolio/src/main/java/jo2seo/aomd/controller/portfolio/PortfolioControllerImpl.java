@@ -122,8 +122,10 @@ public class PortfolioControllerImpl implements PortfolioController {
     public ResponseEntity updatePortfolio(
             String shareUrl, 
             UpdatePortfolioRequest updatePortfolioRequest) {
+        String memberEmail = getCurrentEmail()
+                .orElseThrow(NoAuthenticationException::new);
         Portfolio portfolio = 
-                portfolioService.update(shareUrl, updatePortfolioRequest);
+                portfolioService.update(memberEmail, shareUrl, updatePortfolioRequest);
         return new ResponseEntity(portfolio, CREATED);
     }
     

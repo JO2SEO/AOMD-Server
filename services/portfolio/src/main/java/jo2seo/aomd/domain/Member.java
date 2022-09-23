@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
-@Entity
+@Entity(name = "Member")
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

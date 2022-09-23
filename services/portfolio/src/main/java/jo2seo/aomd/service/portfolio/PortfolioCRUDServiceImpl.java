@@ -1,7 +1,8 @@
 package jo2seo.aomd.service.portfolio;
 
-import jo2seo.aomd.api.portfolio.dto.*;
-import jo2seo.aomd.api.resume.dto.ResumeDto;
+import jo2seo.aomd.api.portfolio.dto.CreatePortfolioRequest;
+import jo2seo.aomd.api.portfolio.dto.PortfolioTitleDto;
+import jo2seo.aomd.api.portfolio.dto.UpdatePortfolioRequest;
 import jo2seo.aomd.domain.Member;
 import jo2seo.aomd.domain.Portfolio;
 import jo2seo.aomd.exception.Member.MemberNotFoundException;
@@ -9,10 +10,7 @@ import jo2seo.aomd.exception.Member.NoAuthenticationException;
 import jo2seo.aomd.exception.portfolio.NoMatchingPortfolioException;
 import jo2seo.aomd.repository.portfolio.PortfolioRepository;
 import jo2seo.aomd.repository.user.MemberRepository;
-import jo2seo.aomd.service.portfolio.mapper.PortfolioBlockMapper;
-import jo2seo.aomd.service.portfolio.mapper.PortfolioMapper;
 import jo2seo.aomd.service.portfolio.validation.PortfolioValidator;
-import jo2seo.aomd.service.resume.mapper.ResumeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -102,6 +100,21 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
 
     @Override
     @Transactional
+    public Portfolio update(String memberEmail, String shareUrl, UpdatePortfolioRequest updatePortfolioRequest) {
+
+        Member member = memberRepository.findByEmail(memberEmail)
+                .orElseThrow(MemberNotFoundException::new);
+
+        Portfolio portfolio = portfolioRepository.findByMemberAndShareUrl(member, shareUrl)
+                .orElseThrow(NoMatchingPortfolioException::new);
+
+        portfolio.updateAll(updatePortfolioRequest);
+
+        return portfolio;
+    }
+
+    @Override
+    @Transactional
     public Portfolio addBlock(String shareUrl, String blockId) {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
@@ -117,26 +130,7 @@ public class PortfolioCRUDServiceImpl implements PortfolioCRUDService {
         portfolio.addNewBlock(blockId);
         return portfolio;
     }
-
-
-    @Override
-    @Transactional
-    public Portfolio update(String shareUrl, UpdatePortfolioRequest updatePortfolioRequest) {
-        String memberEmail = getCurrentEmail()
-                .orElseThrow(NoAuthenticationException::new);
-
-        Member member = memberRepository.findByEmail(memberEmail)
-                .orElseThrow(MemberNotFoundException::new);
-
-        Portfolio portfolio = portfolioRepository.findByMemberAndShareUrl(member, shareUrl)
-                .orElseThrow(NoMatchingPortfolioException::new);
-
-        portfolio.updateAll(updatePortfolioRequest);
-
-        return portfolio;
-    }
-
-
+    
     @Override
     @Transactional
     public void deleteBlock(String shareUrl, String blockId) {

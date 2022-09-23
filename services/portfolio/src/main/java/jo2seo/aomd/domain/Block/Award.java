@@ -14,7 +14,7 @@ public class Award implements Block {
 
     private String id;
     private String title;
-    private Long ownerId;
+    private String ownerId;
     private String publisher;
     private Long publishedAt;
     private Long createdAt;

@@ -16,7 +16,7 @@ public class LicenseDto implements BlockDto {
     private final static BlockType type = LICENSE;
     private String id;
     private String title;
-    private Long ownerId;
+    private String ownerEmail;
     private String publisher;
     private LocalDateTime publishedAt;
     private LocalDateTime createdAt;
@@ -30,7 +30,7 @@ public class LicenseDto implements BlockDto {
         return "LicenseDto{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", ownerId=" + ownerId +
+                ", ownerId=" + ownerEmail +
                 ", publisher='" + publisher + '\'' +
                 ", publishedAt=" + publishedAt +
                 ", createdAt=" + createdAt +
