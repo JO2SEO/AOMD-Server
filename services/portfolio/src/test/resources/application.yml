@@ -14,7 +14,3 @@ spring:
     properties:
       hibernate:
         show_sql: true
-
-jwt:
-  secret: testsecrettestsecrettestsecrettestsecrettestsecrettestsecret
-  expiration-time: 3600
