@@ -56,16 +56,24 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-processResources.dependsOn('copyGitSubmodule')
+def copyYmlFile = {
+	copy {
+		from '../../config'
+		include '*.yml'
+		into './src/main/resources/'
+	}
 
-task copyGitSubmodule(type: Copy) {
-	from './config'
-	include '*.yml'
-	into './services/portfolio/src/main/resources'
+	copy {
+		from '../../config'
+		include '*.yml'
+		into './src/test/resources/'
+	}
+}
 
-	from './config'
-	include '*.yml'
-	into './services/portfolio/src/test/resources'
+task buildTask{
+	println '==============copy==============='
+	copyYmlFile()
+	println '===============end==============='
 }
 
 bootRun {
