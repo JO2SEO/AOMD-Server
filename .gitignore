@@ -38,5 +38,4 @@ out/
 
 ### Server Secret ###
 secret.yml
-/config/secret.yml
 /services/portfolio/src/main/resources/secret.yml
