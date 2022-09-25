@@ -1,6 +1,6 @@
 spring:
   config:
-    import: blockchain.yml
+    import: secret.yml
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb;MODE=MySQL;

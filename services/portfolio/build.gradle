@@ -60,6 +60,7 @@ task copyGitSubmodule(type: Copy) {
 	from './config'
 	include '*.yml'
 	into './services/portfolio/src/main/resources'
+	into './services/portfolio/src/test/resources'
 }
 
 bootRun {
