@@ -56,6 +56,12 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+task copyGitSubmodule(type: Copy) {
+	from './config'
+	include '*.yml'
+	into './services/portfolio/src/main/resources'
+}
+
 bootRun {
 	String activeProfile = System.properties['spring.profiles.active']
 	systemProperty "spring.profiles.active", activeProfile

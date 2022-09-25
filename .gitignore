@@ -36,5 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-### BlockChain Server Secret ###
+### Server Secret ###
 secret.yml
+/config/secret.yml
+/services/portfolio/src/main/resources/secret.yml
