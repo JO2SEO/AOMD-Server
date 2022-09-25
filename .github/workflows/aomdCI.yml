@@ -36,7 +36,6 @@ jobs:
       - name: Build with Gradle
         shell: bash
         run: |
-            cat ./services/portfolio/src/main/resources/secret.yml
             ./gradlew -Dspring.profiles.active=prod clean build
         
       - name: Set up Docker Buildx
