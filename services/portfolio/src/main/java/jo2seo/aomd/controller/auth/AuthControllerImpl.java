@@ -10,6 +10,7 @@ import jo2seo.aomd.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,13 @@ public class AuthControllerImpl implements AuthController {
     private final AuthService kakaoAuthService;
     private final TokenProvider tokenProvider;
 
+    @Value("${jwt.expiration-time}")
+    private long expirationTime;
+
     @Override
     public ResponseEntity login(BasicLoginRequest basicLoginRequest, HttpServletResponse response) {
-        String jwt = tokenProvider.createToken(basicLoginRequest, 5 * 60);
-        String rjwt = tokenProvider.createToken(basicLoginRequest, 60 * 60);
+        String jwt = tokenProvider.createToken(basicLoginRequest, expirationTime);
+        String rjwt = tokenProvider.createToken(basicLoginRequest, expirationTime);
 
         Cookie cookie = new Cookie("refreshToken", rjwt);
         cookie.setSecure(true);

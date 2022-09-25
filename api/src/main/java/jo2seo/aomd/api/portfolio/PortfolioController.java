@@ -21,7 +21,7 @@ public interface PortfolioController {
     @GetMapping("/simple-portfolio")
     ResponseEntity getSimplePortfolioAllByMember();
 
-    @GetMapping("/portfolio/{shareUrl}")
+    @GetMapping("/sharing/portfolio/{shareUrl}")
     ResponseEntity sharedPortfolioOpen(@PathVariable("shareUrl") String shareUrl);
 
     @PostMapping("/portfolio")
