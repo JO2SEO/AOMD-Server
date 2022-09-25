@@ -37,6 +37,5 @@ out/
 .vscode/
 
 ### Server Secret ###
-secret.yml
-/config/secret.yml
-/services/portfolio/src/main/resources/secret.yml
+#secret.yml
+**/services/**/secret.yml
