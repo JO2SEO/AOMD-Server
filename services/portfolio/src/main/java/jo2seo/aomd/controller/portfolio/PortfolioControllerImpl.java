@@ -89,7 +89,8 @@ public class PortfolioControllerImpl implements PortfolioController {
     @Override
     public ResponseEntity sharedPortfolioOpen(String shareUrl) {
         Portfolio portfolio = portfolioService.checkSharingAndGet(shareUrl);
-        return new ResponseEntity(portfolio, OK);
+        PortfolioDto portfolioDto = portfolioMapper.entityToDTO(portfolio);
+        return new ResponseEntity(portfolioDto, OK);
     }
 
     @Override
@@ -97,7 +98,8 @@ public class PortfolioControllerImpl implements PortfolioController {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
         Portfolio portfolio = portfolioService.checkMineAndGet(memberEmail, portfolioId);
-        return new ResponseEntity(portfolio, OK);
+        PortfolioDto portfolioDto = portfolioMapper.entityToDTO(portfolio);
+        return new ResponseEntity(portfolioDto, OK);
     }
 
     @Override
@@ -106,7 +108,8 @@ public class PortfolioControllerImpl implements PortfolioController {
         String memberEmail = getCurrentEmail()
                 .orElseThrow(NoAuthenticationException::new);
         Portfolio portfolio = portfolioService.createNewPortfolio(memberEmail, createPortfolioRequest);
-        return new ResponseEntity(portfolio, CREATED);
+        PortfolioDto portfolioDto = portfolioMapper.entityToDTO(portfolio);
+        return new ResponseEntity(portfolioDto, CREATED);
     }
 
     @Override
@@ -115,7 +118,8 @@ public class PortfolioControllerImpl implements PortfolioController {
             CreatePortfolioBlockRequest createPortfolioBlockRequest) {
         Portfolio portfolio =
                 portfolioService.addBlock(shareUrl, createPortfolioBlockRequest.getBlockId());
-        return new ResponseEntity(portfolio, CREATED);
+        PortfolioDto portfolioDto = portfolioMapper.entityToDTO(portfolio);
+        return new ResponseEntity(portfolioDto, CREATED);
     }
 
     @Override

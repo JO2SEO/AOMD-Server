@@ -1,6 +1,4 @@
 rootProject.name = 'aomd'
 include 'api'
-include 'services'
 include 'services:portfolio'
-findProject(':services:portfolio')?.name = 'portfolio'
 

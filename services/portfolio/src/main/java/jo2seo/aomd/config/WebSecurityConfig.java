@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/error",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/actuator/**"
+                        "/actuator/**",
+                        "/api/v1/sharing/**"
                 );
     }
 

@@ -1,6 +1,6 @@
 spring:
   config:
-    import: blockchain.yml
+    import: secret.yml
   datasource:
     url: jdbc:h2:tcp://localhost/~/Desktop/Dev/local/Spring/security
     username: sa
@@ -23,13 +23,8 @@ spring:
       dev: "dev"
       prod: "prod"
 
-jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-  expiration-time: 3600
-
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
-
 ---
 spring:
   config:

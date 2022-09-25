@@ -44,8 +44,8 @@ public class PreProcessorDev {
         Portfolio portfolio1 = new Portfolio(m1, "member1 pp");
         Portfolio portfolio2 = new Portfolio(m2, "member2 pp");
         Portfolio portfolio3 = new Portfolio(m3, "member3 pp");
-        Portfolio portfolio4 = new Portfolio(m3, "member4 pp");
-        Portfolio portfolio5 = new Portfolio(m3, "member5 pp");
+        Portfolio portfolio4 = new Portfolio(m4, "member4 pp");
+        Portfolio portfolio5 = new Portfolio(m5, "member5 pp");
         portfolioRepository.save(portfolio1);
         portfolioRepository.save(portfolio2);
         portfolioRepository.save(portfolio3);

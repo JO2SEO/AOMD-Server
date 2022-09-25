@@ -1,0 +1,27 @@
+spring:
+  config:
+    import: secret.yml
+
+blockchain:
+  server:
+    domain: 
+    port: 
+    asset:
+      award:
+        all: 
+        one: 
+        create: 
+        update: 
+        delete: 
+      license:
+        all: 
+        one: 
+        create: 
+        update: 
+        delete: 
+      education:
+        all: 
+        one: 
+        create: 
+        update: 
+        delete: 
