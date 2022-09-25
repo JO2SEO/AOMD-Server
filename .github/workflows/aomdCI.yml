@@ -5,13 +5,10 @@ on:
     branches:
       - main
     types: [ closed ]
-  push:
-    branches:
-      - main
 
 jobs:
   if_merged:
-    if: github.event.pull_request.merged == true || github.event_name == 'push'
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-20.04
     steps:
       - run: echo The PR was merged
