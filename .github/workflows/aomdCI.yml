@@ -6,6 +6,9 @@ on:
       - main
     types: [ closed ]
 
+env:
+  git_tag: ${{ github.sha }}
+
 jobs:
   if_merged:
     if: github.event.pull_request.merged == true
@@ -50,3 +53,35 @@ jobs:
           context: ./services/portfolio/
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/aomd-server:latest
+  
+  update-argocd-manifest:
+    needs: if_merged
+    runs-on: ubuntu-20.04
+    
+    defaults:
+      run:
+        working-directory: ./prod/aomd-server
+
+    steps:
+    - name: Checkout argocd-deploy branch
+      uses: actions/checkout@v3
+      with:
+        ref: argocd-deploy
+        token: ${{ secrets.AOMD_PRIVATE }}
+        submodules: recursive
+
+    - name: Change git-tag.yaml
+      run: |
+        cat <<EOF > git-tag.yaml
+        image:
+          tag: ${{ env.git_tag }}
+        EOF
+
+    - name: New git tag push
+      run: |
+        git config --global user.email "GitHub Actions Bot@github.com"
+        git config --global user.name "GitHub Actions Bot"
+        git add git-tag.yaml
+        git commit -m "update git tag"
+        git pull origin argocd-deploy
+        git push origin argocd-deploy
