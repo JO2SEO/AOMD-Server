@@ -1,0 +1,71 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: aomd-mysql
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      app: aomd-mysql
+#  template:
+#    metadata:
+#      labels:
+#        app: aomd-mysql
+#    spec:
+#      containers:
+#        - name: aomd-mysql
+#          image: mysql:5.7
+#          args:
+#            - "--ignore-db-dir=lost+found"
+#          env:
+#            - name: MYSQL_ROOT_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: aomd-secret
+#                  key: mysql-root-password
+#                  optional: false
+#            - name: MYSQL_DATABASE
+#              valueFrom:
+#                secretKeyRef:
+#                  name: aomd-secret
+#                  key: mysql-database
+#                  optional: false
+#            - name: MYSQL_USER
+#              valueFrom:
+#                secretKeyRef:
+#                  name: aomd-secret
+#                  key: mysql-user
+#                  optional: false
+#            - name: MYSQL_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: aomd-secret
+#                  key: mysql-password
+#                  optional: false
+#          ports:
+#            - containerPort: 3306
+#          resources:
+#            limits:
+#              memory: 350Mi
+#          volumeMounts:
+#            - mountPath: /var/lib/mysql
+#              name: data
+#      volumes:
+#        - name: mysql-vol
+#          persistentVolumeClaim:
+#            claimName: aomd-mysqlclaim
+#      #  Persistance 볼륨 지정해주기
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: mysql
+#spec:
+#  selector:
+#    app: mysql
+#  type: NodePort
+#  ports:
+#    - port: 3306
+#      nodePort: 30306
+#      targetPort: 3306
+#      protocol: TCP
