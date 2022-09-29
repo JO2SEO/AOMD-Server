@@ -39,9 +39,9 @@ spec:
               protocol: TCP
           env:
             - name: JAVA_OPTS
-              value: "-Dspring.profiles.active={{ .Values.application.mode }}"
+              value: -Dspring.profiles.active={{ .Values.application.mode }}
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mysql://aomd-mysql/aomd-db"
+              value: jdbc:mysql://aomd-mysql/aomd-db
               
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.db.username }}
