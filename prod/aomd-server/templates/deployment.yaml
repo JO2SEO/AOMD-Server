@@ -50,6 +50,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
                   key: {{ .Values.db.passwordKey }}
+          command: ["printenv"]
+          args: ["JAVA_OPTS", "SPRING_DATASOURCE_URL"]
           # livenessProbe:
           #   httpGet:
           #     path: /
