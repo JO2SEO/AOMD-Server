@@ -42,6 +42,7 @@ spring:
   config:
     activate:
       on-profile: "prod"
+    import: mysql-datasource.yml
   jpa:
     hibernate:
       ddl-auto: create
