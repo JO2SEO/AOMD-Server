@@ -40,6 +40,16 @@ spec:
           env:
             - name: JAVA_OPTS
               value: -Dspring.profiles.active={{ .Values.application.mode }}
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://aomd-mysql/aomd-db"
+              
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.db.username }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.db.passwordKey }}
           # livenessProbe:
           #   httpGet:
           #     path: /
