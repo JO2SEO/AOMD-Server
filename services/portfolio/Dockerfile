@@ -8,4 +8,4 @@ WORKDIR /HOME/spring/
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "${JAVA_OPTS}", "-jar", "./app.jar"]
+ENTRYPOINT ["sh", "-c", "java", "${JAVA_OPTS}", "-jar", "./app.jar"]
