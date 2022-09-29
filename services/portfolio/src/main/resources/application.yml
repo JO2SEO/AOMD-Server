@@ -45,4 +45,4 @@ spring:
     import: mysql-datasource.yml
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
