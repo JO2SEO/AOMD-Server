@@ -16,4 +16,4 @@
 ---
 
 ## ArgoCD Flow
-<img width="600" alt="image" src="static/aomd-server-argocd.gif)">
+![server-argocd-gif](static/aomd-server-argocd.gif)
