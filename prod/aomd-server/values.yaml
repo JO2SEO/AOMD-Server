@@ -33,7 +33,6 @@ ingress:
   ingressClassName: "nginx"
   annotations: 
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
     # kubernetes.io/tls-acme: "true"
   hosts:
     - paths:
@@ -41,7 +40,7 @@ ingress:
           pathType: Prefix
         - path: /swagger-ui
           pathType: Prefix
-        - path: /v3/api-docs/
+        - path: /v3/api-docs
           pathType: Prefix
         - path: /actuator
           pathType: Prefix
