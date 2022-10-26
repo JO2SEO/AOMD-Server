@@ -1,0 +1,38 @@
+version: '2.4'
+
+services:
+  aomd:
+    build: services/portfolio
+    image: aomd-server:latest
+    volumes:
+      - ./services/portfolio/build/libs/aomd-server.jar:/HOME/spring/app.jar
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aomd-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_DATABASE_PLATFORM: org.hibernate.dialect.MySQL5Dialect
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+  
+  mysql:
+    image: mysql:5.7
+    platform: "linux/x86_64"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=aomd-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=1234
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: "/usr/bin/mysql -uuser -p1234 --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 5s
+      retries: 10
