@@ -140,8 +140,8 @@ resources:
 configurationFilesPath: /etc/mysql/conf.d/
 
 # Custom mysql configuration files used to override default mysql settings
-configurationFiles: {}
-  mysql.cnf: |-
+configurationFiles:
+  my.cnf: |-
     [mysqld]
     collation-server = utf8_unicode_ci
     character-set-server = utf8
