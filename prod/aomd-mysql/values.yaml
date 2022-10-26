@@ -48,7 +48,7 @@ imagePullPolicy: IfNotPresent
 ## Additionnal arguments that are passed to the MySQL container.
 ## For example use --default-authentication-plugin=mysql_native_password if older clients need to
 ## connect to a MySQL 8 instance.
-args: ["collation-server=utf8_unicode_ci", "character-set-server=utf8"]
+args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
 # collation-server=utf8_unicode_ci
 # character-set-server = utf8
 extraVolumes: |
