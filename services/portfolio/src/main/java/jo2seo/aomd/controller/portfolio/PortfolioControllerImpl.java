@@ -2,6 +2,7 @@ package jo2seo.aomd.controller.portfolio;
 
 import jo2seo.aomd.api.portfolio.PortfolioController;
 import jo2seo.aomd.api.portfolio.block.dto.BlockCompositeDto;
+import jo2seo.aomd.api.portfolio.block.dto.BlockDto;
 import jo2seo.aomd.api.portfolio.dto.*;
 import jo2seo.aomd.api.resume.dto.ResumeDto;
 import jo2seo.aomd.domain.Portfolio;
@@ -42,6 +43,19 @@ public class PortfolioControllerImpl implements PortfolioController {
         BlockCompositeDto blockCompositeDto = 
                 portfolioBlockchainService.findBlockCompositeDto(memberEmail);
 
+        int index = 1;
+        for (BlockDto adto : blockCompositeDto.getAwardDtoList()) {
+            adto.setONumber(10 + index++);
+        }
+        index = 1;
+        for (BlockDto adto : blockCompositeDto.getEducationDtoList()) {
+            adto.setONumber(20 + index++);
+        }
+        index = 1;
+        for (BlockDto adto : blockCompositeDto.getLicenseDtoList()) {
+            adto.setONumber(30 + index++);
+        }
+
         return new ResponseEntity(blockCompositeDto, OK);
     }
 
@@ -57,6 +71,19 @@ public class PortfolioControllerImpl implements PortfolioController {
 
         BlockCompositeDto blockCompositeDto = 
                 portfolioBlockchainService.findBlockCompositeDto(memberEmail);
+        
+        int index = 1;
+        for (BlockDto adto : blockCompositeDto.getAwardDtoList()) {
+            adto.setONumber(10 + index++);
+        }
+        index = 1;
+        for (BlockDto adto : blockCompositeDto.getEducationDtoList()) {
+            adto.setONumber(20 + index++);
+        }
+        index = 1;
+        for (BlockDto adto : blockCompositeDto.getLicenseDtoList()) {
+            adto.setONumber(30 + index++);
+        }
 
         List<Portfolio> portfolioList = 
                 portfolioService.findAllPortfolioByMember(memberEmail);

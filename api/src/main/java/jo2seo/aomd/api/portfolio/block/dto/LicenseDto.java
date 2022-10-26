@@ -13,7 +13,8 @@ import static jo2seo.aomd.api.portfolio.block.dto.BlockType.LICENSE;
 @AllArgsConstructor
 public class LicenseDto implements BlockDto {
 
-    private final static BlockType type = LICENSE;
+    private final BlockType type = LICENSE;
+    private int oNumber;
     private String id;
     private String title;
     private String ownerEmail;
@@ -23,7 +24,18 @@ public class LicenseDto implements BlockDto {
     private String description;
     private LocalDateTime expireDate;
     private String qualificationNumber;
-    
+
+    public LicenseDto(String id, String title, String ownerEmail, String publisher, LocalDateTime publishedAt, LocalDateTime createdAt, String description, LocalDateTime expireDate, String qualificationNumber) {
+        this.id = id;
+        this.title = title;
+        this.ownerEmail = ownerEmail;
+        this.publisher = publisher;
+        this.publishedAt = publishedAt;
+        this.createdAt = createdAt;
+        this.description = description;
+        this.expireDate = expireDate;
+        this.qualificationNumber = qualificationNumber;
+    }
 
     @Override
     public String toString() {
@@ -38,5 +50,10 @@ public class LicenseDto implements BlockDto {
                 ", expireDate=" + expireDate +
                 ", qualificationNumber='" + qualificationNumber + '\'' +
                 '}';
+    }
+
+    @Override
+    public void setONumber(int i) {
+        this.oNumber = i;
     }
 }
