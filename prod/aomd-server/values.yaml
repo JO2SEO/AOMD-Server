@@ -73,7 +73,7 @@ tolerations: []
 affinity: {}
 
 application:
-  mode: prod
+  mode: dev
   
 db:
   username: root
